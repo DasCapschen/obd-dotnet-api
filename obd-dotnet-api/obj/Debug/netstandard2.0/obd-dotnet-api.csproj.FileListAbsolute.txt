@@ -1,0 +1,7 @@
+/media/data/Projects/Code/C#/obd-dotnet-api/obd-dotnet-api/bin/Debug/netstandard2.0/obd-dotnet-api.dll
+/media/data/Projects/Code/C#/obd-dotnet-api/obd-dotnet-api/bin/Debug/netstandard2.0/obd-dotnet-api.pdb
+/media/data/Projects/Code/C#/obd-dotnet-api/obd-dotnet-api/obj/Debug/netstandard2.0/obd-dotnet-api.csprojAssemblyReference.cache
+/media/data/Projects/Code/C#/obd-dotnet-api/obd-dotnet-api/obj/Debug/netstandard2.0/obd-dotnet-api.AssemblyInfoInputs.cache
+/media/data/Projects/Code/C#/obd-dotnet-api/obd-dotnet-api/obj/Debug/netstandard2.0/obd-dotnet-api.AssemblyInfo.cs
+/media/data/Projects/Code/C#/obd-dotnet-api/obd-dotnet-api/obj/Debug/netstandard2.0/obd-dotnet-api.dll
+/media/data/Projects/Code/C#/obd-dotnet-api/obd-dotnet-api/obj/Debug/netstandard2.0/obd-dotnet-api.pdb
