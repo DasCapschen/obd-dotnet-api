@@ -1,11 +1,6 @@
-*.class
-target
-bin
-
-# Package Files #
-*.jar
-*.war
-*.ear
+target/
+bin/
+obj/
 
 # IDE files #
 .settings

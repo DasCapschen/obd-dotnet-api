@@ -60,7 +60,7 @@ namespace obd_dotnet_api.commands.protocol
         }
 
         public override string FormattedResult => Result;
-        public override string CalculatedResult => _obdProtocol.ToString();
+        public override string CalculatedResult => _obdProtocol.Name;
 
         public override string Name => AvailableCommandNames.DescribeProtocolNumber.Value;
 

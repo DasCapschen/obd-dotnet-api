@@ -145,7 +145,8 @@ namespace obd_dotnet_api.utils
                 return true;
 
             //Which byte from the array contains the info we want?
-            var cmdNumber = int.Parse(commandPid, NumberStyles.HexNumber);
+            
+            var cmdNumber = Convert.ToInt32(commandPid, 16);
             var arrayIndex = (cmdNumber - 1) / 8; //the -1 corrects the command code offset, as 00, 20, 40 are not the first commands in each response to be evaluated
 
             if (arrayIndex > availabilityArray.Length - 1)

@@ -39,23 +39,26 @@ namespace obd_dotnet_api.commands.control
             string workingData;
             if (result.Contains(":")) //CAN(ISO-15765) protocol.
             {
-                workingData = Regex.Replace(result, ".:", "").Substring(9); //9 is xxx490201, xxx is bytes of information to follow.
-                const string pattern = "[^a-z0-9 ]";
+                workingData = RemoveAll(".:", result).Substring(9); //9 is xxx490201, xxx is bytes of information to follow.
+
+                //translating from java, it used "CASE INSENSITIVE"... update pattern instead
+                const string pattern = "[^A-Za-z0-9 ]";
                 var m = Regex.Matches(ConvertHexToString(workingData), pattern);
 
                 if (m.Count > 0)
                 {
-                    workingData = Regex.Replace(result, "0:49", "");
-                    workingData = Regex.Replace(workingData,".:", "");
+                    workingData = RemoveAll("0:49", result);
+                    workingData = RemoveAll(".:", workingData);
                 }
             }
             else //ISO9141-2, KWP2000 Fast and KWP2000 5Kbps (ISO15031) protocols.
             {
                 
-                workingData = Regex.Replace(result, "49020.", "");
+                workingData = RemoveAll("49020.", result);
             }
-            
-            _vin = Regex.Replace(ConvertHexToString(workingData), "[\u0000-\u001f]", "");
+
+            _vin = RemoveAll("[\u0000-\u001f]", ConvertHexToString(workingData));
+            //_vin = Regex.Replace(ConvertHexToString(workingData), "[\u0000-\u001f]", "");
         }
 
         /// <inheritdoc/>
@@ -81,10 +84,10 @@ namespace obd_dotnet_api.commands.control
             {
                 //grab the hex in pairs
                 var output = hex.Substring(i, 2);
-                
+
                 //convert hex to decimal
-                var dec = int.Parse(output, NumberStyles.HexNumber);
-                
+                var dec = Convert.ToInt32(output, 16);
+
                 //convert the decimal to character
                 sb.Append((char) dec);
             }

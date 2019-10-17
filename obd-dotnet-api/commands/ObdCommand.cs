@@ -198,7 +198,7 @@ namespace obd_dotnet_api.commands
         {
             RawData = RemoveAll(WhitespacePattern, RawData); //removes all [ \t\n\x0B\f\r]
             RawData = RemoveAll(BusinitPattern, RawData);
-            
+
             if (!Regex.IsMatch(RawData, DigitsLettersPattern)) 
             {
                 throw new NonNumericResponseException(RawData);
@@ -208,10 +208,10 @@ namespace obd_dotnet_api.commands
             Buffer.Clear();
             var begin = 0;
             const int length = 2;
-            while (End <= RawData.Length)
+            while ((begin+length) <= RawData.Length)
             {
                 var hex = "0x" + RawData.Substring(begin, length);
-                Buffer.Add(int.Parse(hex, NumberStyles.HexNumber));
+                Buffer.Add(Convert.ToInt32(hex, 16));
                 begin += length;
             }
         }
@@ -230,7 +230,7 @@ namespace obd_dotnet_api.commands
             char c;
 
             // -1 if the end of the stream is reached
-            while (((b = inputStream.ReadByte()) > -1)) 
+            while ((b = inputStream.ReadByte()) > -1)
             {
                 c = (char) b;
                 if (c == '>') // read until '>' arrives

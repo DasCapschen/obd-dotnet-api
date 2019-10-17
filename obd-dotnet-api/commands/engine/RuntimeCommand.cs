@@ -39,7 +39,7 @@ namespace obd_dotnet_api.commands.engine
             _value = Buffer[2] * 256 + Buffer[3];
         }
 
-        public override string FormattedResult => $"{_value / 3600:D2}{(_value % 3600) / 60:D2}{_value % 60:D2}";
+        public override string FormattedResult => $"{_value / 3600:D2}:{(_value % 3600) / 60:D2}:{_value % 60:D2}";
 
         public override string CalculatedResult => _value.ToString();
 

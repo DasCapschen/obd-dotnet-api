@@ -36,7 +36,7 @@ namespace obd_dotnet_api.commands.control
         ///<summary>Constant <code>hexArray="0123456789ABCDEF".toCharArray()</code></summary>
         protected readonly static char[] HexArray = "0123456789ABCDEF".ToCharArray();
 
-        protected readonly StringBuilder Codes = null;
+        protected readonly StringBuilder Codes;
 
         ///<summary>Constructor for TroubleCodesCommand</summary>
         public TroubleCodesCommand()
@@ -53,6 +53,7 @@ namespace obd_dotnet_api.commands.control
         protected TroubleCodesCommand(string command)
             : base(command)
         {
+            Codes = new StringBuilder();
         }
 
         /// <summary>Copy ctor.</summary>

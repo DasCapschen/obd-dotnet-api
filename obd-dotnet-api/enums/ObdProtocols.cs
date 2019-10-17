@@ -23,19 +23,19 @@ namespace obd_dotnet_api.enums
 {
     public class ObdProtocols
     {
-          public static readonly ObdProtocols Auto = new ObdProtocols('0'); //Auto select protocol and save
-          public static readonly ObdProtocols SaeJ1850Pwm = new ObdProtocols('1'); //41.6 kbaud
-          public static readonly ObdProtocols SaeJ1850Vpw = new ObdProtocols('2'); //10.4 kbaud
-          public static readonly ObdProtocols Iso91412 = new ObdProtocols('3'); //5 baud init
-          public static readonly ObdProtocols Iso142304Kwp = new ObdProtocols('4');//5 baud init
-          public static readonly ObdProtocols Iso142304KwpFast = new ObdProtocols('5'); //Fast init
-          public static readonly ObdProtocols Iso157654Can = new ObdProtocols('6'); //11 bit ID, 500 kbaud
-          public static readonly ObdProtocols Iso157654CanB = new ObdProtocols('7'); //29 bit ID, 500 kbaud
-          public static readonly ObdProtocols Iso157654CanC = new ObdProtocols('8'); //11 bit ID, 250 kbaud
-          public static readonly ObdProtocols Iso157654CanD = new ObdProtocols('9'); //29 bit ID, 250 kbaud
-          public static readonly ObdProtocols SaeJ1939Can = new ObdProtocols('A'); //29 bit ID, 250 kbaud (user adjustable)
-          public static readonly ObdProtocols User1Can = new ObdProtocols('B'); //11 bit ID (user adjustable), 125 kbaud (user adjustable)
-          public static readonly ObdProtocols User2Can = new ObdProtocols('C'); //11 bit ID (user adjustable), 50 kbaud (user adjustable)
+          public static readonly ObdProtocols Auto = new ObdProtocols('0', "Auto"); //Auto select protocol and save
+          public static readonly ObdProtocols SaeJ1850Pwm = new ObdProtocols('1', "SAE_J1850_PWM"); //41.6 kbaud
+          public static readonly ObdProtocols SaeJ1850Vpw = new ObdProtocols('2', "SAE_J1850_VPW"); //10.4 kbaud
+          public static readonly ObdProtocols Iso91412 = new ObdProtocols('3', "ISO_9141_2"); //5 baud init
+          public static readonly ObdProtocols Iso142304Kwp = new ObdProtocols('4', "ISO_14230_4_KWP");//5 baud init
+          public static readonly ObdProtocols Iso142304KwpFast = new ObdProtocols('5', "ISO_14230_4_KWP_FAST"); //Fast init
+          public static readonly ObdProtocols Iso157654Can = new ObdProtocols('6', "ISO_15765_4_CAN"); //11 bit ID, 500 kbaud
+          public static readonly ObdProtocols Iso157654CanB = new ObdProtocols('7', "ISO_15765_4_CAN_B"); //29 bit ID, 500 kbaud
+          public static readonly ObdProtocols Iso157654CanC = new ObdProtocols('8', "ISO_15765_4_CAN_C"); //11 bit ID, 250 kbaud
+          public static readonly ObdProtocols Iso157654CanD = new ObdProtocols('9', "ISO_15765_4_CAN_D"); //29 bit ID, 250 kbaud
+          public static readonly ObdProtocols SaeJ1939Can = new ObdProtocols('A', "SAE_J1939_CAN"); //29 bit ID, 250 kbaud (user adjustable)
+          public static readonly ObdProtocols User1Can = new ObdProtocols('B', "USER1_CAN"); //11 bit ID (user adjustable), 125 kbaud (user adjustable)
+          public static readonly ObdProtocols User2Can = new ObdProtocols('C', "USER2_CAN"); //11 bit ID (user adjustable), 50 kbaud (user adjustable)
 
 
           public static IEnumerable<ObdProtocols> Values
@@ -60,6 +60,8 @@ namespace obd_dotnet_api.enums
 
           public char Value { get; private set; }
 
-          private ObdProtocols(char value) => (Value) = (value);
+          public string Name { get; private set; }
+
+          private ObdProtocols(char value, string name) => (Value, Name) = (value, name);
     }
 }
