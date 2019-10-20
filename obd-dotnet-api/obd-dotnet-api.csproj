@@ -7,7 +7,8 @@
         <PackageId>ObdDotnetApi</PackageId>
         <Version>0.1.0</Version>
         <Authors>DasCapschen</Authors>
-        <PackageDescription>"Translation" of the Obd-Java-Api into C#</PackageDescription>
+        <PackageDescription>"Translation" of the Obd-Java-Api into C#. See https://github.com/pires/obd-java-api</PackageDescription>
+        <RepositoryUrl>https://github.com/DasCapschen/obd-dotnet-api</RepositoryUrl>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
