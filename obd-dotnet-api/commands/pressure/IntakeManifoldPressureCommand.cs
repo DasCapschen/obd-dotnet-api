@@ -11,19 +11,14 @@
  * the License.
  */
 
-
-/**
- * Intake Manifold Pressure
- *
- */
+using obd_dotnet_api.enums;
 
 namespace obd_dotnet_api.commands.pressure
 {
-    public class IntakeManifoldPressureCommand : PressureCommand 
+    public class IntakeManifoldPressureCommand : PressureCommand
     {
-
         /// <summary>default ctor</summary>
-        public IntakeManifoldPressureCommand() 
+        public IntakeManifoldPressureCommand()
             : base("01 0B")
         {
         }
@@ -35,7 +30,7 @@ namespace obd_dotnet_api.commands.pressure
         {
         }
 
-        /** {@inheritDoc} */
-        public override string Name => AvailableCommandNames.IntakeManifoldPressure.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.IntakeManifoldPressure.Name;
     }
 }

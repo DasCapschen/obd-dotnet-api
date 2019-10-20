@@ -11,24 +11,26 @@
  * the License.
  */
 
+#region
+
 using System.IO;
 using System.Text;
 using obd_dotnet_api.commands.engine;
 using Xunit;
 
+#endregion
+
 namespace unit_tests.commands
 {
     public class MassAirFlowCommandTest : MassAirFlowCommand
     {
-
-
         /**
      * Test for valid InputStream read, maximum value of 655.35g/s
      *
      * @throws IOException
      */
         [Fact]
-        public void TestMaxMafValue() 
+        public void TestMaxMafValue()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -47,7 +49,7 @@ namespace unit_tests.commands
      * @throws IOException
      */
         [Fact]
-        public void TestSomeMafValue() 
+        public void TestSomeMafValue()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -78,6 +80,5 @@ namespace unit_tests.commands
             ReadResult(mockIn);
             Assert.Equal(0d, Maf);
         }
-
     }
 }

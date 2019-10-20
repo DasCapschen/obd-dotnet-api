@@ -12,36 +12,47 @@
  */
 
 
-/**
- * <p>Abstract ObdProtocolCommand class.</p>
- */
 namespace obd_dotnet_api.commands.protocol
 {
-    public abstract class ObdProtocolCommand : ObdCommand 
+    /// <summary>
+    /// Abstract ObdProtocolCommand class.
+    /// </summary>
+    public abstract class ObdProtocolCommand : ObdCommand
     {
-
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="command"></param>
         public ObdProtocolCommand(string command)
             : base(command)
         {
         }
 
-        public ObdProtocolCommand(ObdProtocolCommand other) 
+        /// <summary>
+        /// Copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public ObdProtocolCommand(ObdProtocolCommand other)
             : this(other.Cmd)
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             // ignore
         }
 
+        ///<inheritdoc/>
         protected override void FillBuffer()
         {
             // settings commands don't return a value appropriate to place into the
             // buffer, so do nothing
         }
 
+        ///<inheritdoc/>
         public override string FormattedResult => Result;
+        ///<inheritdoc/>
         public override string CalculatedResult => Result;
     }
 }

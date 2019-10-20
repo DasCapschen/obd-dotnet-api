@@ -11,26 +11,24 @@
  * the License.
  */
 
-
-
-/**
- * Turn-off spaces.
- */
 namespace obd_dotnet_api.commands.protocol
 {
-    public class SpacesOffCommand : ObdProtocolCommand 
+    public class SpacesOffCommand : ObdProtocolCommand
     {
-
-        public SpacesOffCommand() 
+        /// <summary>Constructor</summary>
+        public SpacesOffCommand()
             : base("ATS0")
         {
         }
 
-        public SpacesOffCommand(SpacesOffCommand other) 
+        /// <summary>Copy constructor</summary>
+        /// <param name="other"></param>
+        public SpacesOffCommand(SpacesOffCommand other)
             : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override string Name => "Spaces Off";
     }
 }

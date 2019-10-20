@@ -16,16 +16,19 @@
  * Tests for RPMCommand class.
  */
 
+#region
+
 using System.IO;
 using System.Text;
 using obd_dotnet_api.commands.engine;
 using Xunit;
 
+#endregion
+
 namespace unit_tests.commands
 {
     public class RpmCommandTest : RpmCommand
     {
-
         /**
          * Test for valid InputStream read, max RPM
          *

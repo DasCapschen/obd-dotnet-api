@@ -11,18 +11,23 @@
  * the License.
  */
 
-/**
- * This class allows for an unspecified command to be sent.
- */
 namespace obd_dotnet_api.commands.protocol
 {
-    public class ObdRawCommand : ObdProtocolCommand 
+    /// <summary>
+    /// This class allows for an unspecified command to be sent.
+    /// </summary>
+    public class ObdRawCommand : ObdProtocolCommand
     {
-        public ObdRawCommand(string command) 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="command">Command to run (ex: 00)</param>
+        public ObdRawCommand(string command)
             : base(command)
         {
         }
 
+        ///<inheritdoc/>
         public override string Name => "Custom command " + CommandPid;
     }
 }

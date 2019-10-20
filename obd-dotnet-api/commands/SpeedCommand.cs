@@ -11,17 +11,14 @@
  * the License.
  */
 
-/**
- * Current speed.
- *
- */
-
-using System;
-using System.Globalization;
+using obd_dotnet_api.enums;
 
 namespace obd_dotnet_api.commands
 {
-    public class SpeedCommand : ObdCommand, ISystemOfUnits 
+    /// <summary>
+    /// Current speed.
+    /// </summary>
+    public class SpeedCommand : ObdCommand, ISystemOfUnits
     {
         /// <summary>the speed in metric units.</summary>
         public int MetricSpeed { get; private set; }
@@ -29,32 +26,39 @@ namespace obd_dotnet_api.commands
         /// <summary>the speed in imperial units.</summary>
         public float ImperialSpeed => GetImperialUnit();
 
-        public override string FormattedResult => 
-            UseImperialUnits ? $"{ImperialSpeed:2F}{ResultUnit}" 
-                             : $"{MetricSpeed:D}{ResultUnit}";
+        /// <inheritdoc/>
+        public override string FormattedResult =>
+            UseImperialUnits
+                ? $"{ImperialSpeed:2F}{ResultUnit}"
+                : $"{MetricSpeed:D}{ResultUnit}";
 
-        public override string CalculatedResult => 
-            UseImperialUnits ? ImperialSpeed.ToString() 
-                             : MetricSpeed.ToString();
+        /// <inheritdoc/>
+        public override string CalculatedResult =>
+            UseImperialUnits
+                ? ImperialSpeed.ToString()
+                : MetricSpeed.ToString();
 
+        /// <inheritdoc/>
         public override string ResultUnit => UseImperialUnits ? "mph" : "km/h";
 
-        public override string Name => AvailableCommandNames.Speed.Value;
-        
+        /// <inheritdoc/>
+        public override string Name => AvailableCommandNames.Speed.Name;
+
         /// <summary>default ctor</summary>
-        public SpeedCommand() 
+        public SpeedCommand()
             : base("01 0D")
         {
         }
-        
+
         /// <summary>copy constructor</summary>
         /// <param name="other"></param>
-        public SpeedCommand(SpeedCommand other) 
+        public SpeedCommand(SpeedCommand other)
             : base(other)
         {
         }
-        
-        public override void PerformCalculations() 
+
+        /// <inheritdoc/>
+        public override void PerformCalculations()
         {
             // Ignore first two bytes [hh hh] of the response.
             MetricSpeed = Buffer[2];

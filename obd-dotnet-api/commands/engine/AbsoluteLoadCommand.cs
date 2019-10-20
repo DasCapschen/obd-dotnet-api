@@ -11,25 +11,30 @@
  * the License.
  */
 
+using obd_dotnet_api.enums;
 
-/**
- * <p>AbsoluteLoadCommand class.</p>
- *
- */
 namespace obd_dotnet_api.commands.engine
 {
-    public class AbsoluteLoadCommand : PercentageObdCommand 
+    public class AbsoluteLoadCommand : PercentageObdCommand
     {
-        public AbsoluteLoadCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public AbsoluteLoadCommand()
             : base("01 43")
         {
         }
 
-        public AbsoluteLoadCommand(AbsoluteLoadCommand other) 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public AbsoluteLoadCommand(AbsoluteLoadCommand other)
             : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             var a = Buffer[0];
@@ -37,8 +42,12 @@ namespace obd_dotnet_api.commands.engine
             Percentage = (a * 256 + b) * 100 / 255.0f;
         }
 
+        /// <summary>
+        /// Ratio, see <see cref="PercentageObdCommand.Percentage"/>
+        /// </summary>
         public double Ratio => Percentage;
 
-        public override string Name => AvailableCommandNames.AbsLoad.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.AbsLoad.Name;
     }
 }

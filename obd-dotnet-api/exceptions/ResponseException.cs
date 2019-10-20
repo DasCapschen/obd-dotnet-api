@@ -11,83 +11,72 @@
  * the License.
  */
 
-/**
- * Generic message error
- *
- */
-
 using System;
-using System.ComponentModel.Design;
 using System.Text.RegularExpressions;
 
 namespace obd_dotnet_api.exceptions
 {
-    public class ResponseException : Exception 
+    /// <summary>
+    /// Generic message error
+    /// </summary>
+    public class ResponseException : Exception
     {
-
         private readonly string _message;
         private string _response;
         private string _command;
         private readonly bool _matchRegex;
 
-        /**
-         * <p>Constructor for ResponseException.</p>
-         *
-         * @param message a {@link java.lang.String} object.
-         */
-        protected ResponseException(string message) 
+        /// <summary>
+        /// Constructor for ResponseException
+        /// </summary>
+        /// <param name="message"></param>
+        protected ResponseException(string message)
         {
             _message = message;
         }
 
-        /**
-         * <p>Constructor for ResponseException.</p>
-         *
-         * @param message a {@link java.lang.String} object.
-         * @param matchRegex a boolean.
-         */
-        protected ResponseException(string message, bool matchRegex) 
+        /// <summary>
+        /// Constructor for ResponseException
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="matchRegex"></param>
+        protected ResponseException(string message, bool matchRegex)
         {
             _message = message;
             _matchRegex = matchRegex;
         }
 
-        private static string Clean(string s) 
+        private static string Clean(string s)
         {
-            
             return s == null ? "" : Regex.Replace(s, "\\s", "").ToUpper();
         }
 
-        /**
-         * <p>isError.</p>
-         *
-         * @param response a {@link java.lang.String} object.
-         * @return a boolean.
-         */
-        public bool IsError(string response) 
+        /// <summary>
+        /// Check if Response is an Error
+        /// </summary>
+        /// <param name="response"></param>
+        /// <returns></returns>
+        public bool IsError(string response)
         {
             _response = response;
             if (_matchRegex)
             {
                 return Regex.IsMatch(Clean(response), Clean(_message));
-            } 
-            else 
+            }
+            else
             {
                 return Clean(response).Contains(Clean(_message));
             }
         }
 
-        /**
-         * <p>Setter for the field <code>command</code>.</p>
-         *
-         * @param command a {@link java.lang.String} object.
-         */
+        /// <summary>The Command that caused the error</summary>
         public string Command
         {
             private get => _command;
             set => _command = value;
         }
 
+        /// <summary>Error Message</summary>
         public override string Message => "Error running " + _command + ", response: " + _response;
     }
 }

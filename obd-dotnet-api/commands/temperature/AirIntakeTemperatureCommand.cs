@@ -11,35 +11,26 @@
  * the License.
  */
 
+using obd_dotnet_api.enums;
 
-/**
- * Temperature of intake air.
- *
- */
 namespace obd_dotnet_api.commands.temperature
 {
-    public class AirIntakeTemperatureCommand : TemperatureCommand 
+    public class AirIntakeTemperatureCommand : TemperatureCommand
     {
-
-        /**
-         * <p>Constructor for AirIntakeTemperatureCommand.</p>
-         */
-        public AirIntakeTemperatureCommand() 
+        /// <summary>Constructor for AirIntakeTemperatureCommand</summary>
+        public AirIntakeTemperatureCommand()
             : base("01 0F")
         {
         }
 
-        /**
-         * <p>Constructor for AirIntakeTemperatureCommand.</p>
-         *
-         * @param other a {@link com.github.pires.obd.commands.temperature.AirIntakeTemperatureCommand} object.
-         */
-        public AirIntakeTemperatureCommand(AirIntakeTemperatureCommand other) 
+        /// <summary>Copy Constructor</summary>
+        /// <param name="other"></param>
+        public AirIntakeTemperatureCommand(AirIntakeTemperatureCommand other)
             : base(other)
         {
         }
 
-        /** {@inheritDoc} */
-        public override string Name => AvailableCommandNames.AirIntakeTemp.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.AirIntakeTemp.Name;
     }
 }

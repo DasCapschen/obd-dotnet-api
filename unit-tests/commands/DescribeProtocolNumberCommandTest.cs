@@ -16,19 +16,22 @@
  * Tests for DescribeProtocolNumberCommand class.
  */
 
+#region
+
 using System.IO;
 using System.Text;
 using obd_dotnet_api.commands.protocol;
 using obd_dotnet_api.enums;
 using Xunit;
 
+#endregion
+
 namespace unit_tests.commands
 {
     public class DescribeProtocolNumberCommandTest : DescribeProtocolNumberCommand
     {
-
         [Fact]
-        public void TestGetCalculatedResult() 
+        public void TestGetCalculatedResult()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -37,16 +40,16 @@ namespace unit_tests.commands
             mockIn.Position = 0;
 
             // call the method to test
-            ReadResult(mockIn); 
-            Assert.Equal("ISO_9141_2", CalculatedResult);//AUTO ISO_9141_2
+            ReadResult(mockIn);
+            Assert.Equal("ISO_9141_2", CalculatedResult); //AUTO ISO_9141_2
 
             // call the method to test
             ReadResult(mockIn);
-            Assert.Equal("SAE_J1850_VPW", CalculatedResult);//SAE_J1850_VPW
+            Assert.Equal("SAE_J1850_VPW", CalculatedResult); //SAE_J1850_VPW
         }
 
         [Fact]
-        public void TestGetProtocol() 
+        public void TestGetProtocol()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -55,12 +58,12 @@ namespace unit_tests.commands
             mockIn.Position = 0;
 
             // call the method to test
-            ReadResult(mockIn); 
-            Assert.Equal(ObdProtocols.Iso157654Can, ObdProtocol);//AUTO ISO_15765_4_CAN
+            ReadResult(mockIn);
+            Assert.Equal(ObdProtocols.Iso157654Can, ObdProtocol); //AUTO ISO_15765_4_CAN
 
             // call the method to test
-            ReadResult(mockIn); 
-            Assert.Equal(ObdProtocols.Iso157654CanB, ObdProtocol);//ISO_15765_4_CAN_B
+            ReadResult(mockIn);
+            Assert.Equal(ObdProtocols.Iso157654CanB, ObdProtocol); //ISO_15765_4_CAN_B
         }
     }
 }

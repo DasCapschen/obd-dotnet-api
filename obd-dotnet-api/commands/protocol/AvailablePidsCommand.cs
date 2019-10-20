@@ -11,30 +11,39 @@
  * the License.
  */
 
-/**
- * Retrieve available PIDs ranging from 21 to 40.
- *
- */
 namespace obd_dotnet_api.commands.protocol
 {
-    public abstract class AvailablePidsCommand : PersistentCommand 
+    /// <summary>
+    /// abstract base class for AvailablePids Commands
+    /// </summary>
+    public abstract class AvailablePidsCommand : PersistentCommand
     {
-
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="command"></param>
         public AvailablePidsCommand(string command)
-           : base(command)
+            : base(command)
         {
         }
 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
         public AvailablePidsCommand(AvailablePidsCommand other)
-            :base(other)
+            : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
         }
 
+        ///<inheritdoc/>
         public override string FormattedResult => CalculatedResult;
+        ///<inheritdoc/>
         public override string CalculatedResult => RawData.Substring(4);
     }
 }

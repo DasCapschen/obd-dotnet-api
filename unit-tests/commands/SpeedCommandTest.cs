@@ -16,16 +16,19 @@
  * Tests for ObdSpeedCommand class.
  */
 
+#region
+
 using System.IO;
 using System.Text;
 using obd_dotnet_api.commands;
 using Xunit;
 
+#endregion
+
 namespace unit_tests.commands
 {
     public class SpeedCommandTest : SpeedCommand
     {
-
         /**
          * Test for valid InputStream read, 64km/h
          *

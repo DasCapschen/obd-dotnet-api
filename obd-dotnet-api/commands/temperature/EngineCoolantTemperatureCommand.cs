@@ -11,35 +11,26 @@
  * the License.
  */
 
+using obd_dotnet_api.enums;
 
-/**
- * Engine Coolant Temperature.
- *
- */
 namespace obd_dotnet_api.commands.temperature
 {
-    public class EngineCoolantTemperatureCommand : TemperatureCommand 
+    public class EngineCoolantTemperatureCommand : TemperatureCommand
     {
-
-        /**
-     * <p>Constructor for EngineCoolantTemperatureCommand.</p>
-     */
-        public EngineCoolantTemperatureCommand() 
+        /// <summary>Default Constructor</summary>
+        public EngineCoolantTemperatureCommand()
             : base("01 05")
         {
         }
 
-        /**
-     * <p>Constructor for EngineCoolantTemperatureCommand.</p>
-     *
-     * @param other a {@link com.github.pires.obd.commands.temperature.TemperatureCommand} object.
-     */
-        public EngineCoolantTemperatureCommand(TemperatureCommand other) 
-            :base(other)
+        /// <summary>Copy Constructor</summary>
+        /// <param name="other">another TemperatureCommand</param>
+        public EngineCoolantTemperatureCommand(TemperatureCommand other)
+            : base(other)
         {
         }
 
-        /** {@inheritDoc} */
-        public override string Name => AvailableCommandNames.EngineCoolantTemp.Value;
+        /// <inheritdoc/>
+        public override string Name => AvailableCommandNames.EngineCoolantTemp.Name;
     }
 }

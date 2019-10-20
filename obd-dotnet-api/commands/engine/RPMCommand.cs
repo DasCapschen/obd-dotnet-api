@@ -12,39 +12,54 @@
  */
 
 
-/**
- * Displays the current engine revolutions per minute (RPM).
- *
- */
+using obd_dotnet_api.enums;
+
 namespace obd_dotnet_api.commands.engine
 {
-    public class RpmCommand : ObdCommand 
+    /// <summary>
+    /// Displays the current engine revolutions per minute (RPM).
+    /// </summary>
+    public class RpmCommand : ObdCommand
     {
         private int _rpm = -1;
 
-        public RpmCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public RpmCommand()
             : base("01 0C")
         {
         }
 
-        public RpmCommand(RpmCommand other) 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public RpmCommand(RpmCommand other)
             : base(other)
         {
         }
 
-        /** {@inheritDoc} */
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             _rpm = (Buffer[2] * 256 + Buffer[3]) / 4;
         }
 
+        ///<inheritdoc/>
         public override string FormattedResult => $"{_rpm:D}{ResultUnit}";
+        ///<inheritdoc/>
         public override string CalculatedResult => _rpm.ToString();
 
+        ///<inheritdoc/>
         public override string ResultUnit => "RPM";
 
-        public override string Name => AvailableCommandNames.EngineLoad.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.EngineLoad.Name;
 
+        /// <summary>
+        /// revolutions per minute
+        /// </summary>
         public int Rpm => _rpm;
     }
 }

@@ -11,26 +11,31 @@
  * the License.
  */
 
-
-/**
- * Turns off line-feed.
- *
- */
 namespace obd_dotnet_api.commands.protocol
 {
-    public class LineFeedOffCommand : ObdProtocolCommand 
+    /// <summary>
+    /// Turns off line-feed.
+    /// </summary>
+    public class LineFeedOffCommand : ObdProtocolCommand
     {
-
-        public LineFeedOffCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public LineFeedOffCommand()
             : base("AT L0")
         {
         }
 
-        public LineFeedOffCommand(LineFeedOffCommand other) 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public LineFeedOffCommand(LineFeedOffCommand other)
             : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override string Name => "Line Feed Off";
     }
 }

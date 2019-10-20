@@ -11,45 +11,43 @@
  * the License.
  */
 
-
-/**
- * Abstract class for percentage commands.
- *
- */
-
-using System;
-using System.Globalization;
-
 namespace obd_dotnet_api.commands
 {
-    public abstract class PercentageObdCommand : ObdCommand 
+    /// <summary>
+    /// Abstract class for percentage commands.
+    /// </summary>
+    public abstract class PercentageObdCommand : ObdCommand
     {
+        /// <summary>The Percentage Value</summary>
         public float Percentage { get; protected set; }
-
 
         /// <summary>Constructor for PercentageObdCommand</summary>
         /// <param name="command"></param>
-        public PercentageObdCommand(string command) 
+        public PercentageObdCommand(string command)
             : base(command)
         {
         }
 
-
         /// <summary>Copy constructor</summary>
         /// <param name="other">Command to copy</param>
-        public PercentageObdCommand(PercentageObdCommand other) 
+        public PercentageObdCommand(PercentageObdCommand other)
             : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             Percentage = (Buffer[2] * 100.0f) / 255.0f;
         }
 
+        ///<inheritdoc/>
         public override string FormattedResult => $"{Percentage:F1}{ResultUnit}";
+        
+        ///<inheritdoc/>
         public override string CalculatedResult => Percentage.ToString();
 
+        ///<inheritdoc/>
         public override string ResultUnit => "%";
     }
 }

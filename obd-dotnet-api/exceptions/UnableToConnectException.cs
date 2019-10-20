@@ -11,18 +11,16 @@
  * the License.
  */
 
-
-/**
- * Thrown when there is a "UNABLE TO CONNECT" message.
- *
- */
 namespace obd_dotnet_api.exceptions
 {
-    public class UnableToConnectException : ResponseException 
+    /// <summary>
+    /// Thrown when there is a "UNABLE TO CONNECT" message.
+    /// </summary>
+    public class UnableToConnectException : ResponseException
     {
-        /**
-         * <p>Constructor for UnableToConnectException.</p>
-         */
+        /// <summary>
+        /// Constructor for UnableToConnectException.
+        /// </summary>
         public UnableToConnectException() : base("UNABLE TO CONNECT")
         {
         }

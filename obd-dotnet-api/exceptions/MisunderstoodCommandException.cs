@@ -11,19 +11,16 @@
  * the License.
  */
 
-
-/**
- * Thrown when there is a "?" message.
- *
- */
-
 namespace obd_dotnet_api.exceptions
 {
-    public class MisunderstoodCommandException : ResponseException 
+    /// <summary>
+    /// Thrown when there is a "?" message.
+    /// </summary>
+    public class MisunderstoodCommandException : ResponseException
     {
-        /**
-         * <p>Constructor for MisunderstoodCommandException.</p>
-         */
+        /// <summary>
+        /// Constructor for MisunderstoodCommandException
+        /// </summary>
         public MisunderstoodCommandException() : base("?")
         {
         }

@@ -11,21 +11,17 @@
  * the License.
  */
 
+using obd_dotnet_api.enums;
 
-/**
- * <p>ModuleVoltageCommand class.</p>
- *
- */
 namespace obd_dotnet_api.commands.control
 {
-    public class ModuleVoltageCommand : ObdCommand 
+    public class ModuleVoltageCommand : ObdCommand
     {
-
-        // Equivalent ratio (V)
+        ///<summary>Equivalent ratio (V)</summary>
         private double _voltage = 0.00;
 
         /// <summary>default ctor</summary>
-        public ModuleVoltageCommand() 
+        public ModuleVoltageCommand()
             : base("01 42")
         {
         }
@@ -37,6 +33,7 @@ namespace obd_dotnet_api.commands.control
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             var a = Buffer[2];
@@ -44,11 +41,18 @@ namespace obd_dotnet_api.commands.control
             _voltage = (a * 256 + b) / 1000.0;
         }
 
+        ///<inheritdoc/>
         public override string FormattedResult => $"{_voltage:1F}{ResultUnit}";
+        ///<inheritdoc/>
         public override string CalculatedResult => _voltage.ToString();
-        public override string Name => AvailableCommandNames.ControlModuleVoltage.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.ControlModuleVoltage.Name;
+        ///<inheritdoc/>
         public override string ResultUnit => "V";
 
+        /// <summary>
+        /// Voltage, in Volts
+        /// </summary>
         public double Voltage => _voltage;
     }
 }

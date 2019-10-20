@@ -11,21 +11,18 @@
  * the License.
  */
 
-
-/**
- * It is not needed no know how many DTC are stored.
- * Because when no DTC are stored response will be NO DATA
- * And where are more messages it will be stored in frames that have 7 bytes.
- * In one frame are stored 3 DTC.
- * If we find out DTC P0000 that mean no message are we can end.
- *
- */
-
-using System;
 using System.Text.RegularExpressions;
+using obd_dotnet_api.enums;
 
 namespace obd_dotnet_api.commands.control
 {
+    /// <summary>
+    /// It is not needed no know how many DTC are stored.
+    /// Because when no DTC are stored response will be NO DATA
+    /// And where are more messages it will be stored in frames that have 7 bytes.
+    /// In one frame are stored 3 DTC.
+    /// If we find out DTC P0000 that mean no message are we can end.
+    /// </summary>
     public class PendingTroubleCodesCommand : TroubleCodesCommand
     {
         /// <summary>default ctor</summary>
@@ -43,11 +40,13 @@ namespace obd_dotnet_api.commands.control
 
         //this is the only part in "PerformCalculations" that differs between the 3 commands
         //this, just override this, and not the whole function
+        ///<inheritdoc/>
         protected override string RegexReplace(string input)
         {
             return Regex.Replace(input, "^47|[\r\n]47|[\r\n]", "");
         }
-        
-        public override string Name => AvailableCommandNames.PermanentTroubleCodes.Value;
+
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.PermanentTroubleCodes.Name;
     }
 }

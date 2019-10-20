@@ -11,20 +11,16 @@
  * the License.
  */
 
-
-/**
- * Abstract pressure command.
- *
- */
 namespace obd_dotnet_api.commands.pressure
 {
-    public abstract class PressureCommand : ObdCommand, ISystemOfUnits 
+    /// <summary>
+    /// abstract pressure command
+    /// </summary>
+    public abstract class PressureCommand : ObdCommand, ISystemOfUnits
     {
-
         protected int TempValue = 0;
         protected int Pressure = 0;
-
-
+        
         /// <summary>default ctor</summary>
         /// <param name="cmd"></param>
         public PressureCommand(string cmd)
@@ -32,14 +28,13 @@ namespace obd_dotnet_api.commands.pressure
         {
         }
 
-
         /// <summary>copy ctor</summary>
         /// <param name="other"></param>
-        public PressureCommand(PressureCommand other) 
+        public PressureCommand(PressureCommand other)
             : base(other)
         {
         }
-        
+
         /// <summary>
         /// Some PressureCommand subclasses will need to implement this method in order to determine the final kPa value.
         /// *NEED* to read tempValue
@@ -49,27 +44,38 @@ namespace obd_dotnet_api.commands.pressure
         {
             return Buffer[2];
         }
-        
-        public override void PerformCalculations() 
+
+        ///<inheritdoc/>
+        public override void PerformCalculations()
         {
             // ignore first two bytes [hh hh] of the response
             Pressure = PreparePressureValue();
         }
 
-        public override string FormattedResult => UseImperialUnits 
+        ///<inheritdoc/>
+        public override string FormattedResult => UseImperialUnits
             ? $"{GetImperialUnit():F1}{ResultUnit}"
             : $"{MetricUnit:F1}{ResultUnit}";
 
-        
+        /// <summary>
+        /// Pressure in Metric Units (kPa)
+        /// </summary>
         public int MetricUnit => Pressure;
 
-        public float GetImperialUnit() 
+        /// <summary>
+        /// Pressure in Imperial Unit
+        /// </summary>
+        /// <returns>psi</returns>
+        public float GetImperialUnit()
         {
             return Pressure * 0.145037738F;
         }
 
-        public override string CalculatedResult => UseImperialUnits ? GetImperialUnit().ToString() : Pressure.ToString();
+        ///<inheritdoc/>
+        public override string CalculatedResult =>
+            UseImperialUnits ? GetImperialUnit().ToString() : Pressure.ToString();
 
+        ///<inheritdoc/>
         public override string ResultUnit => UseImperialUnits ? "psi" : "kPa";
     }
 }

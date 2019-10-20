@@ -11,20 +11,16 @@
  * the License.
  */
 
+using obd_dotnet_api.enums;
 
-/**
- * Ambient Air Temperature.
- *
- */
 namespace obd_dotnet_api.commands.temperature
 {
-    public class AmbientAirTemperatureCommand : TemperatureCommand 
+    public class AmbientAirTemperatureCommand : TemperatureCommand
     {
-
         /**
      * <p>Constructor for AmbientAirTemperatureCommand.</p>
      */
-        public AmbientAirTemperatureCommand() 
+        public AmbientAirTemperatureCommand()
             : base("01 46")
         {
         }
@@ -34,12 +30,12 @@ namespace obd_dotnet_api.commands.temperature
          *
          * @param other a {@link com.github.pires.obd.commands.temperature.TemperatureCommand} object.
          */
-        public AmbientAirTemperatureCommand(TemperatureCommand other) 
+        public AmbientAirTemperatureCommand(TemperatureCommand other)
             : base(other)
         {
         }
 
-        /** {@inheritDoc} */
-        public override string Name => AvailableCommandNames.AmbientAirTemp.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.AmbientAirTemp.Name;
     }
 }

@@ -11,38 +11,44 @@
  * the License.
  */
 
-
-/**
- * This command is intended to determine the vehicle fuel type.
- *
- */
-
 using System;
 using obd_dotnet_api.enums;
 
 namespace obd_dotnet_api.commands.fuel
 {
-    public class FindFuelTypeCommand : ObdCommand 
+    /// <summary>
+    /// This command is intended to determine the vehicle fuel type.
+    /// </summary>
+    public class FindFuelTypeCommand : ObdCommand
     {
-
         private int _fuelType = 0;
 
-        public FindFuelTypeCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public FindFuelTypeCommand()
             : base("01 51")
         {
         }
 
-        public FindFuelTypeCommand(FindFuelTypeCommand other) 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public FindFuelTypeCommand(FindFuelTypeCommand other)
             : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             _fuelType = Buffer[2];
         }
 
-        public override string FormattedResult {
+        ///<inheritdoc/>
+        public override string FormattedResult
+        {
             get
             {
                 try
@@ -56,7 +62,9 @@ namespace obd_dotnet_api.commands.fuel
             }
         }
 
+        ///<inheritdoc/>
         public override string CalculatedResult => _fuelType.ToString();
-        public override string Name => AvailableCommandNames.FuelType.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.FuelType.Name;
     }
 }

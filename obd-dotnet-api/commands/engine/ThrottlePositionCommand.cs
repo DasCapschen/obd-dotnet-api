@@ -11,24 +11,33 @@
  * the License.
  */
 
+using obd_dotnet_api.enums;
 
-/**
- * Read the throttle position in percentage.
- *
- */
 namespace obd_dotnet_api.commands.engine
 {
-    public class ThrottlePositionCommand : PercentageObdCommand 
+    /// <summary>
+    /// Read the throttle position in percentage.
+    /// </summary>
+    public class ThrottlePositionCommand : PercentageObdCommand
     {
-        public ThrottlePositionCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public ThrottlePositionCommand()
             : base("01 11")
         {
         }
+
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
         public ThrottlePositionCommand(ThrottlePositionCommand other)
             : base(other)
         {
         }
-
-        public override string Name => AvailableCommandNames.ThrottlePos.Value;
+        
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.ThrottlePos.Name;
     }
 }

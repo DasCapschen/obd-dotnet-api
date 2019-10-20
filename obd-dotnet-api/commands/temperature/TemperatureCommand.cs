@@ -11,43 +11,46 @@
  * the License.
  */
 
-
-/**
- * Abstract temperature command.
- *
- */
 namespace obd_dotnet_api.commands.temperature
 {
-    public abstract class TemperatureCommand : ObdCommand, ISystemOfUnits 
+    /// <summary>
+    /// Abstract temperature command.
+    /// </summary>
+    public abstract class TemperatureCommand : ObdCommand, ISystemOfUnits
     {
         /// <summary>the temperature in Celsius.</summary>
         public float Temperature { get; private set; }
-        
-        public override string FormattedResult => UseImperialUnits 
+
+        ///<inheritdoc/>
+        public override string FormattedResult => UseImperialUnits
             ? $"{GetImperialUnit():1F}{ResultUnit}"
             : $"{Temperature:0F}{ResultUnit}";
-        
-        public override string CalculatedResult => 
-            UseImperialUnits ? GetImperialUnit().ToString() 
-                             : Temperature.ToString();
 
+        ///<inheritdoc/>
+        public override string CalculatedResult =>
+            UseImperialUnits
+                ? GetImperialUnit().ToString()
+                : Temperature.ToString();
+
+        ///<inheritdoc/>
         public override string ResultUnit => UseImperialUnits ? "F" : "C";
 
 
         /// <summary>default ctor</summary>
         /// <param name="cmd"></param>
-        public TemperatureCommand(string cmd) 
+        public TemperatureCommand(string cmd)
             : base(cmd)
         {
         }
-        
+
         /// <summary>copy ctor</summary>
         /// <param name="other"></param>
-        public TemperatureCommand(TemperatureCommand other) 
+        public TemperatureCommand(TemperatureCommand other)
             : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             Temperature = Buffer[2] - 40;
@@ -59,10 +62,10 @@ namespace obd_dotnet_api.commands.temperature
         {
             return Temperature * 1.8f + 32;
         }
-        
+
         /// <summary>get the temperature in kelvin</summary>
         /// <returns>the temperature in Kelvin</returns>
-        public float GetKelvin() 
+        public float GetKelvin()
         {
             return Temperature + 273.15f;
         }

@@ -11,24 +11,33 @@
  * the License.
  */
 
-/**
- * Calculated Engine Load value.
- *
- */
+using obd_dotnet_api.enums;
+
 namespace obd_dotnet_api.commands.engine
 {
-    public class LoadCommand : PercentageObdCommand 
+    /// <summary>
+    /// Calculated Engine Load value.
+    /// </summary>
+    public class LoadCommand : PercentageObdCommand
     {
-        public LoadCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public LoadCommand()
             : base("01 04")
         {
         }
-        
-        public LoadCommand(LoadCommand other) 
+
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public LoadCommand(LoadCommand other)
             : base(other)
         {
         }
 
-        public override string Name => AvailableCommandNames.EngineLoad.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.EngineLoad.Name;
     }
 }

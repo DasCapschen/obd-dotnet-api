@@ -11,26 +11,27 @@
  * the License.
  */
 
-
-/**
- * Warm-start the OBD connection.
- *
- */
 namespace obd_dotnet_api.commands.protocol
 {
-    public class ObdWarmstartCommand : ObdProtocolCommand 
+    /// <summary>
+    /// Warm-start the OBD connection.
+    /// </summary>
+    public class ObdWarmstartCommand : ObdProtocolCommand
     {
-
-        public ObdWarmstartCommand() 
+        /// <summary>Constructor</summary>
+        public ObdWarmstartCommand()
             : base("AT WS")
         {
         }
 
-        public ObdWarmstartCommand(ObdWarmstartCommand other) 
+        /// <summary>Copy Constructor</summary>
+        /// <param name="other"></param>
+        public ObdWarmstartCommand(ObdWarmstartCommand other)
             : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override string Name => "Warmstart OBD";
     }
 }

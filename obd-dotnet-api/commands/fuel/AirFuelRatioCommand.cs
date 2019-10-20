@@ -11,34 +11,39 @@
  * the License.
  */
 
-/**
- * AFR
- *
- */
+using obd_dotnet_api.enums;
+
 namespace obd_dotnet_api.commands.fuel
 {
-    public class AirFuelRatioCommand : ObdCommand {
-
+    public class AirFuelRatioCommand : ObdCommand
+    {
         private float _afr = 0;
 
-        public AirFuelRatioCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public AirFuelRatioCommand()
             : base("01 44")
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             float A = Buffer[2];
             float B = Buffer[3];
-            _afr = (((A * 256) + B) / 32768) * 14.7f;//((A*256)+B)/32768
+            _afr = (((A * 256) + B) / 32768) * 14.7f; //((A*256)+B)/32768
         }
 
+        ///<inheritdoc/>
         public override string FormattedResult => $"{AirFuelRatio:2F}:1 AFR";
 
+        ///<inheritdoc/>
         public override string CalculatedResult => AirFuelRatio.ToString();
-        
+
         public double AirFuelRatio => _afr;
 
-        public override string Name => AvailableCommandNames.AirFuelRatio.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.AirFuelRatio.Name;
     }
 }

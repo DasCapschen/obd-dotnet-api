@@ -18,16 +18,19 @@
  * tests.
  */
 
+#region
+
 using System.IO;
 using System.Text;
 using obd_dotnet_api.commands.fuel;
 using Xunit;
 
+#endregion
+
 namespace unit_tests.commands
 {
     public class FuelTrimCommandTest : FuelTrimCommand
     {
-
         /**
      * Test for valid InputStream read, 99.22%
      *
@@ -38,7 +41,7 @@ namespace unit_tests.commands
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
-        
+
             //0x07 (2nd byte) == FuelTrim.LongTermBank1
             var bytes = new byte[] {0x41, 0x07, 0xFF, 0x3E};
             mockIn.Write(Encoding.ASCII.GetBytes("41 07 FF>"));
@@ -47,7 +50,7 @@ namespace unit_tests.commands
 
             // call the method to test
             ReadResult(mockIn);
-            
+
             //Equals for floats is pretty dumb
             Assert.Equal(99.21875f, Value);
         }
@@ -58,13 +61,13 @@ namespace unit_tests.commands
          * @throws IOException
          */
         [Fact]
-        public void TestSomeValue() 
+        public void TestSomeValue()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
 
-            var bytes = new byte[] { 0x41, 0x20, 0x07, 0x20, 0xC8, 0x20, 0x3E};
-        
+            var bytes = new byte[] {0x41, 0x20, 0x07, 0x20, 0xC8, 0x20, 0x3E};
+
             mockIn.Write(Encoding.ASCII.GetBytes("41 07 C8>"));
             mockIn.Flush();
             mockIn.Position = 0;
@@ -80,13 +83,13 @@ namespace unit_tests.commands
      * @throws IOException
      */
         [Fact]
-        public void TestMinFuelTrimValue() 
+        public void TestMinFuelTrimValue()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
 
-            var bytes = new byte[] { 0x41, 0x20, 0x07, 0x20, 0x00, 0x20, 0x3E };
-        
+            var bytes = new byte[] {0x41, 0x20, 0x07, 0x20, 0x00, 0x20, 0x3E};
+
             mockIn.Write(Encoding.ASCII.GetBytes("41 07 00>"));
             mockIn.Flush();
             mockIn.Position = 0;

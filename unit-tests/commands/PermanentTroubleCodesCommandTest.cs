@@ -15,17 +15,20 @@
  * Tests for ThrottlePositionCommand class.
  */
 
+#region
+
 using System.IO;
 using System.Text;
 using obd_dotnet_api.commands.control;
 using obd_dotnet_api.exceptions;
 using Xunit;
 
+#endregion
+
 namespace unit_tests.commands
 {
     public class PermanentTroubleCodesCommandTest : PermanentTroubleCodesCommand
     {
-
         /**
      * Test for two frames with four dtc
      *
@@ -36,11 +39,11 @@ namespace unit_tests.commands
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
-            var _13 = Encoding.ASCII.GetString(new byte[]{13});
+            var _13 = Encoding.ASCII.GetString(new byte[] {13});
             mockIn.Write(Encoding.ASCII.GetBytes($"4A 00 03 51 04 A1 AB{_13}4A F1 06 00 00 00 00>"));
             mockIn.Flush();
             mockIn.Position = 0;
-        
+
             var expected = "P0003\n";
             expected += "C1104\n";
             expected += "B21AB\n";
@@ -58,7 +61,7 @@ namespace unit_tests.commands
      * @throws java.io.IOException
      */
         [Fact]
-        public void OneFrameWithThreeDtc() 
+        public void OneFrameWithThreeDtc()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -109,7 +112,7 @@ namespace unit_tests.commands
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
-            var _13 = Encoding.ASCII.GetString(new byte[]{13});
+            var _13 = Encoding.ASCII.GetString(new byte[] {13});
             mockIn.Write(Encoding.ASCII.GetBytes($"00A{_13}0:4A 04 01 08 01 18{_13}1:01 19 01 20 00 00>"));
             mockIn.Flush();
             mockIn.Position = 0;
@@ -131,7 +134,7 @@ namespace unit_tests.commands
      * @throws IOException
      */
         [Fact]
-        public void OneFrameWithTwoDtcCan() 
+        public void OneFrameWithTwoDtcCan()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -155,7 +158,7 @@ namespace unit_tests.commands
      */
         //@Test(expectedExceptions = NoDataException.class)
         [Fact]
-        public void NoData() 
+        public void NoData()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -163,7 +166,7 @@ namespace unit_tests.commands
             mockIn.Flush();
             mockIn.Position = 0;
 
-            Assert.Throws<NoDataException>(()=>ReadResult(mockIn));
+            Assert.Throws<NoDataException>(() => ReadResult(mockIn));
         }
     }
 }

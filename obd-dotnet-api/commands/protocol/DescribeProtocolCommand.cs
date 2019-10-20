@@ -11,26 +11,29 @@
  * the License.
  */
 
+using obd_dotnet_api.enums;
 
-/**
- * Describe the current Protocol.
- * If a protocol is chosen and the automatic option is
- * also selected, AT DP will show the word 'AUTO' before
- * the protocol description. Note that the description
- * shows the actual protocol names, not the numbers
- * used by the protocol setting commands.
- *
- * @since 1.0-RC12
- */
 namespace obd_dotnet_api.commands.protocol
 {
-    public class DescribeProtocolCommand : ObdProtocolCommand 
+    /// <summary>
+    /// Describe the current Protocol.
+    /// If a protocol is chosen and the automatic option is
+    /// also selected, AT DP will show the word 'AUTO' before
+    /// the protocol description. Note that the description
+    /// shows the actual protocol names, not the numbers
+    /// used by the protocol setting commands.
+    /// </summary>
+    public class DescribeProtocolCommand : ObdProtocolCommand
     {
-        public DescribeProtocolCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public DescribeProtocolCommand()
             : base("AT DP")
         {
         }
 
-        public override string Name => AvailableCommandNames.DescribeProtocol.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.DescribeProtocol.Name;
     }
 }

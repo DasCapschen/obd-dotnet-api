@@ -14,10 +14,14 @@
  * Tests for FuelLevelCommand class.
  */
 
+#region
+
 using System.IO;
 using System.Text;
 using obd_dotnet_api.commands.fuel;
 using Xunit;
+
+#endregion
 
 namespace unit_tests.commands
 {
@@ -29,7 +33,7 @@ namespace unit_tests.commands
          * @throws IOException
          */
         [Fact]
-        public void TestFullTank() 
+        public void TestFullTank()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -48,7 +52,7 @@ namespace unit_tests.commands
          * @throws IOException
          */
         [Fact]
-        public void TestSomeValue() 
+        public void TestSomeValue()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();

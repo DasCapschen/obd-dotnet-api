@@ -11,27 +11,26 @@
  * the License.
  */
 
-
-/**
- * Reset trouble codes.
- *
- */
 namespace obd_dotnet_api.commands.protocol
 {
-    public class ResetTroubleCodesCommand : ObdCommand 
+    public class ResetTroubleCodesCommand : ObdCommand
     {
-
-        public ResetTroubleCodesCommand() 
+        /// <summary>Constructor</summary>
+        public ResetTroubleCodesCommand()
             : base("04")
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
         }
 
+        ///<inheritdoc/>
         public override string FormattedResult => Result;
+        ///<inheritdoc/>
         public override string CalculatedResult => Result;
+        ///<inheritdoc/>
         public override string Name => Result;
     }
 }

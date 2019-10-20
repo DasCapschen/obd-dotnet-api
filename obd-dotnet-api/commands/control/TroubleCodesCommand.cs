@@ -11,23 +11,20 @@
  * the License.
  */
 
-
-/**
- * It is not needed no know how many DTC are stored.
- * Because when no DTC are stored response will be NO DATA
- * And where are more messages it will be stored in frames that have 7 bytes.
- * In one frame are stored 3 DTC.
- * If we find out DTC P0000 that mean no message are we can end.
- *
- */
-
-using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using obd_dotnet_api.enums;
 
 namespace obd_dotnet_api.commands.control
 {
+    /// <summary>
+    /// It is not needed no know how many DTC are stored.
+    /// Because when no DTC are stored response will be NO DATA
+    /// And where are more messages it will be stored in frames that have 7 bytes.
+    /// In one frame are stored 3 DTC.
+    /// If we find out DTC P0000 that mean no message are we can end.
+    /// </summary>
     public class TroubleCodesCommand : ObdCommand
     {
         /// <summary>Constant <code>dtcLetters={'P', 'C', 'B', 'U'}</code></summary>
@@ -64,10 +61,12 @@ namespace obd_dotnet_api.commands.control
             Codes = new StringBuilder();
         }
 
+        ///<inheritdoc/>
         protected override void FillBuffer()
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             var result = Result;
@@ -84,9 +83,9 @@ namespace obd_dotnet_api.commands.control
             }
             else if (result.Contains(":")) //CAN(ISO-15765) protocol two and more frames.
             {
-
                 workingData = Regex.Replace(result, "[\r\n].:", ""); //xxx43yy{codes}
-                startIndex = 7; //Header is xxx43yy, xxx is bytes of information to follow, yy showing the number of data items.
+                startIndex =
+                    7; //Header is xxx43yy, xxx is bytes of information to follow, yy showing the number of data items.
             }
             else //ISO9141-2, KWP2000 Fast and KWP2000 5Kbps (ISO15031) protocols.
             {
@@ -138,10 +137,14 @@ namespace obd_dotnet_api.commands.control
             return (byte) (digit << 4);
         }
 
+        ///<inheritdoc/>
         public override string FormattedResult => Codes.ToString();
+        ///<inheritdoc/>
         public override string CalculatedResult => Codes.ToString();
-        public override string Name => AvailableCommandNames.TroubleCodes.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.TroubleCodes.Name;
 
+        ///<inheritdoc/>
         protected override void ReadRawData(Stream inputStream)
         {
             int b;

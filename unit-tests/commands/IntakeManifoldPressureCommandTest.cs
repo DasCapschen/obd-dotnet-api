@@ -11,24 +11,26 @@
  * the License.
  */
 
+#region
+
 using System.IO;
 using System.Text;
 using obd_dotnet_api.commands.pressure;
 using Xunit;
 
+#endregion
+
 namespace unit_tests.commands
 {
     public class IntakeManifoldPressureCommandTest : IntakeManifoldPressureCommand
     {
-
-
         /**
      * Test for valid InputStream read, 100kPa
      *
      * @throws IOException
      */
         [Fact]
-        public void TestValidPressureMetric() 
+        public void TestValidPressureMetric()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -48,7 +50,7 @@ namespace unit_tests.commands
      * @throws IOException
      */
         [Fact]
-        public void TestValidPressureImperial() 
+        public void TestValidPressureImperial()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -61,6 +63,5 @@ namespace unit_tests.commands
             UseImperialUnits = true;
             Assert.Equal(14.503774f, GetImperialUnit());
         }
-
     }
 }

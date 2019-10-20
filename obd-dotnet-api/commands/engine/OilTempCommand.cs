@@ -12,28 +12,35 @@
  */
 
 
-/**
- * Displays the current engine Oil temperature.
- *
- */
-
-using System;
 using obd_dotnet_api.commands.temperature;
+using obd_dotnet_api.enums;
+
 
 namespace obd_dotnet_api.commands.engine
 {
-    public class OilTempCommand : TemperatureCommand 
+    /// <summary>
+    /// Displays the current engine Oil temperature.
+    /// </summary>
+    public class OilTempCommand : TemperatureCommand
     {
-        public OilTempCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public OilTempCommand()
             : base("01 5C")
         {
         }
 
-        public OilTempCommand(OilTempCommand other) 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public OilTempCommand(OilTempCommand other)
             : base(other)
         {
         }
-
-        public override string Name => AvailableCommandNames.EngineOilTemp.Value;
+        
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.EngineOilTemp.Name;
     }
 }

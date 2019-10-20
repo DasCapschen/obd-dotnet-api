@@ -11,32 +11,27 @@
  * the License.
  */
 
-
-/**
- * Base persistent OBD command.
- *
- */
-
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 
 namespace obd_dotnet_api.commands
 {
+    /// <summary>
+    /// Baseclass for persistent OBD commands
+    /// </summary>
     public abstract class PersistentCommand : ObdCommand
     {
-
         private static Dictionary<string, string> _knownValues = new Dictionary<string, string>();
         private static Dictionary<string, List<int>> _knownBuffers = new Dictionary<string, List<int>>();
-        
+
         /// <summary>default ctor</summary>
         /// <param name="command"></param>
         public PersistentCommand(string command)
             : base(command)
         {
         }
-        
+
         /// <summary>copy ctor</summary>
         /// <param name="other"></param>
         public PersistentCommand(ObdCommand other)
@@ -60,6 +55,7 @@ namespace obd_dotnet_api.commands
             return _knownValues.ContainsKey(key);
         }
 
+        /// <inheritdoc/>
         protected override void ReadResult(Stream inputStream)
         {
             base.ReadResult(inputStream);
@@ -68,6 +64,7 @@ namespace obd_dotnet_api.commands
             _knownBuffers[key] = new List<int>(Buffer);
         }
 
+        /// <inheritdoc/>
         public override void Run(Stream inputStream, Stream outputStream)
         {
             var key = GetType().Name;

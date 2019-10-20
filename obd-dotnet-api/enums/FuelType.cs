@@ -11,19 +11,15 @@
  * the License.
  */
 
-/**
- * MODE 1 PID 0x51 will return one of the following values to identify the fuel
- * type of the vehicle.
- *
- */
-
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace obd_dotnet_api.enums
 {
+    /// <summary>
+    /// An "ENUM" with all fuel types
+    /// MODE 1 PID 0x51 will return one of these values to identify the fuel type of the vehicle.
+    /// </summary>
     public class FuelType
     {
         public static readonly FuelType Gasoline = new FuelType(0x01, "Gasoline");
@@ -48,8 +44,11 @@ namespace obd_dotnet_api.enums
         public static readonly FuelType HybridElectric = new FuelType(0x14, "Hybrid Electric");
         public static readonly FuelType HybridMixed = new FuelType(0x15, "Hybrid Mixed");
         public static readonly FuelType HybridRegenerative = new FuelType(0x16, "Hybrid Regenerative");
-        
-        public static IEnumerable<FuelType> Values 
+
+        /// <summary>
+        /// All Fueltypes in numeric order
+        /// </summary>
+        public static IEnumerable<FuelType> Values
         {
             get
             {
@@ -78,13 +77,26 @@ namespace obd_dotnet_api.enums
             }
         }
 
+        /// <summary>
+        /// Get Fueltype Object by Numeric Value
+        /// </summary>
+        /// <param name="val">numeric value of fueltype</param>
+        /// <returns>Fueltype object</returns>
         public static FuelType FromValue(int val)
         {
             return Values.First(item => item.Value == val);
         }
 
-        public int Value { get; private set; } 
+        /// <summary>
+        /// the numeric value of this fueltype
+        /// </summary>
+        public int Value { get; private set; }
+
+        /// <summary>
+        /// human readable description of the fueltype
+        /// </summary>
         public string Description { get; private set; }
+
         private FuelType(int value, string desc) => (Value, Description) = (value, desc);
     }
 }

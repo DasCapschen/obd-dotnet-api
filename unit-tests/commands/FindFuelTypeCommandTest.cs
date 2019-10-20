@@ -16,23 +16,26 @@
  * Tests for FindFuelTypeCommand class.
  */
 
+#region
+
 using System.IO;
 using System.Text;
 using obd_dotnet_api.commands.fuel;
 using Xunit;
 
+#endregion
+
 namespace unit_tests.commands
 {
     public class FindFuelTypeCommandTest : FindFuelTypeCommand
     {
-
         /**
      * Test for valid InputStream read, Gasoline
      *
      * @throws IOException
      */
         [Fact]
-        public void TestFindGasoline() 
+        public void TestFindGasoline()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -51,7 +54,7 @@ namespace unit_tests.commands
      * @throws IOException
      */
         [Fact]
-        public void TestDiesel() 
+        public void TestDiesel()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -70,7 +73,7 @@ namespace unit_tests.commands
      * @throws IOException
      */
         [Fact]
-        public void TestHybridEthanol() 
+        public void TestHybridEthanol()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();

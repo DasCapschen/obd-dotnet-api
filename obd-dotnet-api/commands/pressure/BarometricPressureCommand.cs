@@ -11,26 +11,31 @@
  * the License.
  */
 
+using obd_dotnet_api.enums;
 
-/**
- * Barometric pressure.
- *
- */
+
 namespace obd_dotnet_api.commands.pressure
 {
-    public class BarometricPressureCommand : PressureCommand 
+    public class BarometricPressureCommand : PressureCommand
     {
-
-        public BarometricPressureCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public BarometricPressureCommand()
             : base("01 33")
         {
         }
 
-        public BarometricPressureCommand(PressureCommand other) 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public BarometricPressureCommand(PressureCommand other)
             : base(other)
         {
         }
 
-        public override string Name => AvailableCommandNames.BarometricPressure.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.BarometricPressure.Name;
     }
 }

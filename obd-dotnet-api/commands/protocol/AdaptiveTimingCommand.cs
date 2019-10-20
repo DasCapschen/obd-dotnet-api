@@ -11,28 +11,35 @@
  * the License.
  */
 
-/**
- * By default, Adaptive Timing option 1 (AT1) is enabled, and is the recommended setting.
- * AT0 is used to disable Adaptive timing (so the timeout is always as set by AT ST),
- * while AT2 is a more aggressive version of AT1 (the effect is more noticeable for very
- * slow connections – you may not see much difference with faster OBD systems.
- *
- */
 namespace obd_dotnet_api.commands.protocol
 {
-    public class AdaptiveTimingCommand : ObdProtocolCommand 
+    /// <summary>
+    /// By default, Adaptive Timing option 1 (AT1) is enabled, and is the recommended setting.
+    /// AT0 is used to disable Adaptive timing (so the timeout is always as set by AT ST),
+    /// while AT2 is a more aggressive version of AT1 (the effect is more noticeable for very
+    /// slow connections – you may not see much difference with faster OBD systems.
+    /// </summary>
+    public class AdaptiveTimingCommand : ObdProtocolCommand
     {
-
-        public AdaptiveTimingCommand(int mode) 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="mode"></param>
+        public AdaptiveTimingCommand(int mode)
             : base("AT AT" + mode)
         {
         }
 
-        public AdaptiveTimingCommand(AdaptiveTimingCommand other) 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public AdaptiveTimingCommand(AdaptiveTimingCommand other)
             : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override string Name => "Adaptive Timing Set";
     }
 }

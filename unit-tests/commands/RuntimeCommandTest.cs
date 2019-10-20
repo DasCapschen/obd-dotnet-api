@@ -15,16 +15,19 @@
  * Runtime since engine start in seconds, with a maximum value of 65535.
  */
 
+#region
+
 using System.IO;
 using System.Text;
 using obd_dotnet_api.commands.engine;
 using Xunit;
 
+#endregion
+
 namespace unit_tests.commands
 {
     public class RuntimeCommandTest : RuntimeCommand
     {
-
         /**
      * Test for valid InputStream read, 65535 seconds.
      *
@@ -82,5 +85,4 @@ namespace unit_tests.commands
             Assert.Equal("00:00:00", FormattedResult);
         }
     }
-
 }

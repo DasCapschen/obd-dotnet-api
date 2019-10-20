@@ -16,23 +16,26 @@
  * Runtime since engine start in seconds, with a maximum value of 65535.
  */
 
+#region
+
 using System.IO;
 using System.Text;
 using obd_dotnet_api.commands.control;
 using Xunit;
 
+#endregion
+
 namespace unit_tests.commands
 {
     public class DistanceSinceCcCommandTest : DistanceSinceCcCommand
     {
-
         /**
      * Test for valid InputStream read, 65535 km.
      *
      * @throws IOException
      */
         [Fact]
-        public void TestMaxDistanceValue() 
+        public void TestMaxDistanceValue()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -51,7 +54,7 @@ namespace unit_tests.commands
      * @throws IOException
      */
         [Fact]
-        public void TestSomeRuntimeValue() 
+        public void TestSomeRuntimeValue()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -70,7 +73,7 @@ namespace unit_tests.commands
      * @throws IOException
      */
         [Fact]
-        public void TestMinRuntimeValue() 
+        public void TestMinRuntimeValue()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();

@@ -11,37 +11,42 @@
  * the License.
  */
 
+using obd_dotnet_api.enums;
 
-/**
- * Wideband AFR
- *
- */
 namespace obd_dotnet_api.commands.fuel
 {
-    public class WidebandAirFuelRatioCommand : ObdCommand 
+    public class WidebandAirFuelRatioCommand : ObdCommand
     {
-
         private float _wafr = 0;
 
-        public WidebandAirFuelRatioCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public WidebandAirFuelRatioCommand()
             : base("01 34")
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             float A = Buffer[2];
             float B = Buffer[3];
-            _wafr = (((A * 256) + B) / 32768) * 14.7f;//((A*256)+B)/32768
+            _wafr = (((A * 256) + B) / 32768) * 14.7f; //((A*256)+B)/32768
         }
 
+        ///<inheritdoc/>
         public override string FormattedResult => $"{WidebandAirFuelRatio:2F}:1 AFR";
 
+        ///<inheritdoc/>
         public override string CalculatedResult => WidebandAirFuelRatio.ToString();
 
+        /// <summary>
+        /// air flow ratio
+        /// </summary>
         public double WidebandAirFuelRatio => _wafr;
 
-        /** {@inheritDoc} */
-        public override string Name => AvailableCommandNames.WidebandAirFuelRatio.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.WidebandAirFuelRatio.Name;
     }
 }

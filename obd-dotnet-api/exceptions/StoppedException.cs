@@ -11,18 +11,16 @@
  * the License.
  */
 
-
-/**
- * Sent when there is a "STOPPED" message.
- *
- */
 namespace obd_dotnet_api.exceptions
 {
-    public class StoppedException : ResponseException 
+    /// <summary>
+    /// Sent when there is a "STOPPED" message.
+    /// </summary>
+    public class StoppedException : ResponseException
     {
-        /**
-         * <p>Constructor for StoppedException.</p>
-         */
+        /// <summary>
+        /// Constructor for StoppedException
+        /// </summary>
         public StoppedException() : base("STOPPED")
         {
         }

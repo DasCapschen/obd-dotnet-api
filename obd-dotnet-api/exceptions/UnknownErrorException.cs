@@ -11,18 +11,16 @@
  * the License.
  */
 
-
-/**
- * Thrown when there is "ERROR" in the response
- *
- */
 namespace obd_dotnet_api.exceptions
 {
-    public class UnknownErrorException : ResponseException 
+    /// <summary>
+    /// Thrown when there is "ERROR" in the response
+    /// </summary>
+    public class UnknownErrorException : ResponseException
     {
-        /**
-         * <p>Constructor for UnknownErrorException.</p>
-         */
+        /// <summary>
+        /// Constructor for UnknownErrorException
+        /// </summary>
         public UnknownErrorException() : base("ERROR")
         {
         }

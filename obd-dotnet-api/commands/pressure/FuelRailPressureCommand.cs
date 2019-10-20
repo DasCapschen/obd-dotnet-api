@@ -11,28 +11,21 @@
  * the License.
  */
 
-
-/**
- * <p>FuelRailPressureCommand class.</p>
- *
- */
-
-using System;
+using obd_dotnet_api.enums;
 
 namespace obd_dotnet_api.commands.pressure
 {
-    public class FuelRailPressureCommand : PressureCommand 
+    public class FuelRailPressureCommand : PressureCommand
     {
-
         /// <summary>default ctor</summary>
-        public FuelRailPressureCommand() 
+        public FuelRailPressureCommand()
             : base("01 23")
         {
         }
 
         /// <summary>copy ctor</summary>
         /// <param name="other"></param>
-        public FuelRailPressureCommand(FuelRailPressureCommand other) 
+        public FuelRailPressureCommand(FuelRailPressureCommand other)
             : base(other)
         {
         }
@@ -46,6 +39,7 @@ namespace obd_dotnet_api.commands.pressure
             return ((a * 256) + b) * 10;
         }
 
-        public override string Name => AvailableCommandNames.FuelRailPressure.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.FuelRailPressure.Name;
     }
 }

@@ -11,19 +11,16 @@
  * the License.
  */
 
-/**
- * Thrown when there is a "BUS INIT... ERROR" message
- *
- */
-
 namespace obd_dotnet_api.exceptions
 {
-    public class BusInitException : ResponseException 
+    /// <summary>
+    /// Thrown when there is a "BUS INIT... ERROR" message
+    /// </summary>
+    public class BusInitException : ResponseException
     {
-
-        /**
-         * <p>Constructor for BusInitException.</p>
-         */
+        /// <summary>
+        /// Constructor for BusInitException
+        /// </summary>
         public BusInitException() : base("BUS INIT... ERROR")
         {
         }

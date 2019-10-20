@@ -11,44 +11,50 @@
  * the License.
  */
 
-
 using System;
+using obd_dotnet_api.enums;
 
 namespace obd_dotnet_api.commands.control
 {
-    public class IgnitionMonitorCommand : ObdCommand 
+    public class IgnitionMonitorCommand : ObdCommand
     {
-
         private bool _ignitionOn = false;
 
         /// <summary>default ctor</summary>
-        public IgnitionMonitorCommand() 
+        public IgnitionMonitorCommand()
             : base("AT IGN")
         {
         }
 
         /// <summary>copy ctor</summary>
         /// <param name="other"></param>
-        public IgnitionMonitorCommand(IgnitionMonitorCommand other) 
+        public IgnitionMonitorCommand(IgnitionMonitorCommand other)
             : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             var result = Result;
             _ignitionOn = result.Equals("ON", StringComparison.OrdinalIgnoreCase);
         }
 
+        ///<inheritdoc/>
         public override string FormattedResult => Result;
+        ///<inheritdoc/>
         public override string CalculatedResult => Result;
-        public override string Name => AvailableCommandNames.IgnitionMonitor.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.IgnitionMonitor.Name;
+        
+        /// <summary>
+        /// true if ignition is on
+        /// </summary>
         public bool IsIgnitionOn => _ignitionOn;
 
+        ///<inheritdoc/>
         protected override void FillBuffer()
         {
         }
     }
 }
-
-

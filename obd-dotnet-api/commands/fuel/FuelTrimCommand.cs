@@ -11,20 +11,12 @@
  * the License.
  */
 
-
-/**
- * Fuel Trim.
- *
- */
-
-using System;
 using obd_dotnet_api.enums;
 
 namespace obd_dotnet_api.commands.fuel
 {
     public class FuelTrimCommand : PercentageObdCommand
     {
-
         private readonly FuelTrim _bank;
 
         /// <summary>
@@ -33,34 +25,39 @@ namespace obd_dotnet_api.commands.fuel
         /// Please, see <see cref="FuelTrim"/> for more details.
         /// </summary>
         /// <param name="bank"></param>
-        public FuelTrimCommand(FuelTrim bank) 
+        public FuelTrimCommand(FuelTrim bank)
             : base(bank.BuildObdCommand())
         {
             this._bank = bank;
         }
 
+        /// <summary>
+        /// calls <see cref="FuelTrimCommand(FuelTrim)"/> with ShortTermBank1
+        /// </summary>
         public FuelTrimCommand()
             : this(FuelTrim.ShortTermBank1)
         {
         }
 
-        private float PrepareTempValue(int value) 
+        private float PrepareTempValue(int value)
         {
             return (value - 128) * (100.0F / 128);
         }
 
-        public override void PerformCalculations() 
+        ///<inheritdoc/>
+        public override void PerformCalculations()
         {
             // ignore first two bytes [hh hh] of the response
             Percentage = PrepareTempValue(Buffer[2]);
         }
-        
+
         /// <summary>the read Fuel Trim percentage value.</summary>
         public float Value => Percentage;
 
         /// <summary>the name of the bank in string representation.</summary>
         public string Bank => _bank.Bank;
 
+        ///<inheritdoc/>
         public override string Name => _bank.Bank;
     }
 }

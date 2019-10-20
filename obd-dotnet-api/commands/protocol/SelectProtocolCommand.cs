@@ -11,28 +11,23 @@
  * the License.
  */
 
-
-/**
- * Select the protocol to use.
- *
- */
-
-using System;
 using obd_dotnet_api.enums;
 
 namespace obd_dotnet_api.commands.protocol
 {
-    public class SelectProtocolCommand : ObdProtocolCommand 
+    public class SelectProtocolCommand : ObdProtocolCommand
     {
-
         private readonly ObdProtocols _protocol;
 
-        public SelectProtocolCommand(ObdProtocols protocol) 
+        /// <summary>Constructor</summary>
+        /// <param name="protocol">Protocol to use</param>
+        public SelectProtocolCommand(ObdProtocols protocol)
             : base("AT SP " + protocol.Value)
         {
             _protocol = protocol;
         }
 
-        public override string Name => "Select Protocol " + _protocol;
+        ///<inheritdoc/>
+        public override string Name => "Select Protocol " + _protocol.Name;
     }
 }

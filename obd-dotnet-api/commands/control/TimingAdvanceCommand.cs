@@ -11,28 +11,30 @@
  * the License.
  */
 
-
-/**
- * Timing Advance
- *
- */
-
+using obd_dotnet_api.enums;
 
 namespace obd_dotnet_api.commands.control
 {
-    public class TimingAdvanceCommand : PercentageObdCommand 
+    public class TimingAdvanceCommand : PercentageObdCommand
     {
-
-        public TimingAdvanceCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public TimingAdvanceCommand()
             : base("01 0E")
         {
         }
 
-        public TimingAdvanceCommand(TimingAdvanceCommand other) 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public TimingAdvanceCommand(TimingAdvanceCommand other)
             : base(other)
         {
         }
 
-        public override string Name => AvailableCommandNames.TimingAdvance.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.TimingAdvance.Name;
     }
 }

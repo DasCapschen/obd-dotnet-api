@@ -15,12 +15,15 @@
  * Tests for ThrottlePositionCommand class.
  */
 
-using System;
+#region
+
 using System.IO;
 using System.Text;
 using obd_dotnet_api.commands.control;
 using obd_dotnet_api.exceptions;
 using Xunit;
+
+#endregion
 
 namespace unit_tests.commands
 {
@@ -35,11 +38,11 @@ namespace unit_tests.commands
         public void TwoFramesWithFourDtc()
         {
             var mockIn = new MemoryStream();
-            var _13 = Encoding.ASCII.GetString(new byte[]{13});
+            var _13 = Encoding.ASCII.GetString(new byte[] {13});
             mockIn.Write(Encoding.ASCII.GetBytes($"43 00 03 51 04 A1 AB{_13}43 F1 06 00 00 00 00>"));
             mockIn.Flush();
             mockIn.Position = 0;
-            
+
             var expected = "P0003\n";
             expected += "C1104\n";
             expected += "B21AB\n";
@@ -105,7 +108,7 @@ namespace unit_tests.commands
         public void TwoFramesWithFourDtcCan()
         {
             var mockIn = new MemoryStream();
-            var _13 = Encoding.ASCII.GetString(new byte[]{13});
+            var _13 = Encoding.ASCII.GetString(new byte[] {13});
             mockIn.Write(Encoding.ASCII.GetBytes($"00A{_13}0: 43 04 01 08 01 18{_13}1: 01 19 01 20 00 00>"));
             mockIn.Flush();
             mockIn.Position = 0;
@@ -159,6 +162,5 @@ namespace unit_tests.commands
             // call the method to test
             Assert.Throws<NoDataException>(() => ReadResult(mockIn));
         }
-
     }
 }

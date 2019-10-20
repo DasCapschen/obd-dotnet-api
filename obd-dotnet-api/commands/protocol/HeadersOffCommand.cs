@@ -11,25 +11,31 @@
  * the License.
  */
 
-/**
- * Turn-off headers.
- *
- */
 namespace obd_dotnet_api.commands.protocol
 {
-    public class HeadersOffCommand : ObdProtocolCommand 
+    /// <summary>
+    /// Turn off headers.
+    /// </summary>
+    public class HeadersOffCommand : ObdProtocolCommand
     {
-
-        public HeadersOffCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public HeadersOffCommand()
             : base("AT H0") //was ATH0 originally
         {
         }
 
-        public HeadersOffCommand(HeadersOffCommand other) 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public HeadersOffCommand(HeadersOffCommand other)
             : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override string Name => "Headers disabled";
     }
 }

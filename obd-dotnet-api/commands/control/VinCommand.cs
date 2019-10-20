@@ -11,35 +11,43 @@
  * the License.
  */
 
-
 using System;
-using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using obd_dotnet_api.enums;
 
 namespace obd_dotnet_api.commands.control
 {
-    public class VinCommand : PersistentCommand 
+    public class VinCommand : PersistentCommand
     {
         private string _vin = "";
 
-        public VinCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public VinCommand()
             : base("09 02")
         {
         }
 
-        public VinCommand(VinCommand other) 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public VinCommand(VinCommand other)
             : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             var result = Result;
             string workingData;
             if (result.Contains(":")) //CAN(ISO-15765) protocol.
             {
-                workingData = RemoveAll(".:", result).Substring(9); //9 is xxx490201, xxx is bytes of information to follow.
+                workingData =
+                    RemoveAll(".:", result).Substring(9); //9 is xxx490201, xxx is bytes of information to follow.
 
                 //translating from java, it used "CASE INSENSITIVE"... update pattern instead
                 const string pattern = "[^A-Za-z0-9 ]";
@@ -53,7 +61,6 @@ namespace obd_dotnet_api.commands.control
             }
             else //ISO9141-2, KWP2000 Fast and KWP2000 5Kbps (ISO15031) protocols.
             {
-                
                 workingData = RemoveAll("49020.", result);
             }
 
@@ -65,7 +72,7 @@ namespace obd_dotnet_api.commands.control
         public override string FormattedResult => _vin;
 
         /// <inheritdoc/>
-        public override string Name => AvailableCommandNames.Vin.Value;
+        public override string Name => AvailableCommandNames.Vin.Name;
 
         /// <inheritdoc/>
         public override string CalculatedResult => _vin;
@@ -75,12 +82,17 @@ namespace obd_dotnet_api.commands.control
         {
         }
 
-        public string ConvertHexToString(string hex) 
+        /// <summary>
+        /// converts a hex number (as string) to a ascii representation
+        /// </summary>
+        /// <param name="hex">hex number, ex: 49204c6f...</param>
+        /// <returns></returns>
+        public string ConvertHexToString(string hex)
         {
             var sb = new StringBuilder();
-            
+
             //49204c6f7665204a617661 split into two characters 49, 20, 4c...
-            for (var i = 0; i < hex.Length - 1; i += 2) 
+            for (var i = 0; i < hex.Length - 1; i += 2)
             {
                 //grab the hex in pairs
                 var output = hex.Substring(i, 2);
@@ -91,9 +103,8 @@ namespace obd_dotnet_api.commands.control
                 //convert the decimal to character
                 sb.Append((char) dec);
             }
+
             return sb.ToString();
         }
     }
 }
-
-

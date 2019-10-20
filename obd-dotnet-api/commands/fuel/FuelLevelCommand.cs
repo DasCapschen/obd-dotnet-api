@@ -11,26 +11,32 @@
  * the License.
  */
 
+using obd_dotnet_api.enums;
 
-/**
- * Get fuel level in percentage
- *
- */
 namespace obd_dotnet_api.commands.fuel
 {
-    public class FuelLevelCommand : PercentageObdCommand 
+    public class FuelLevelCommand : PercentageObdCommand
     {
-        public FuelLevelCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public FuelLevelCommand()
             : base("01 2F")
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             Percentage = 100.0f * Buffer[2] / 255.0f;
         }
 
-        public override string Name => AvailableCommandNames.FuelLevel.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.FuelLevel.Name;
+        
+        /// <summary>
+        /// fuel level <see cref="PercentageObdCommand.Percentage"/>
+        /// </summary>
         public float FuelLevel => Percentage;
     }
 }

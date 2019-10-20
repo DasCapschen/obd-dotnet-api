@@ -11,29 +11,33 @@
  * the License.
  */
 
-
-/**
- * Retrieve available PIDs ranging from 41 to 60.
- *
- */
-
-using System;
+using obd_dotnet_api.enums;
 
 namespace obd_dotnet_api.commands.protocol
 {
-    public class AvailablePidsCommand_41_60 : AvailablePidsCommand 
+    /// <summary>
+    /// Retrieve available PIDs ranging from 41 to 60.
+    /// </summary>
+    public class AvailablePidsCommand_41_60 : AvailablePidsCommand
     {
-
-        public AvailablePidsCommand_41_60() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public AvailablePidsCommand_41_60()
             : base("01 40")
         {
         }
 
-        public AvailablePidsCommand_41_60(AvailablePidsCommand_41_60 other) 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public AvailablePidsCommand_41_60(AvailablePidsCommand_41_60 other)
             : base(other)
         {
         }
 
-        public override string Name => AvailableCommandNames.Pids41_60.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.Pids41_60.Name;
     }
 }

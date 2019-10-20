@@ -16,16 +16,19 @@
  * Tests for ThrottlePositionCommand class.
  */
 
+#region
+
 using System.IO;
 using System.Text;
 using obd_dotnet_api.commands.engine;
 using Xunit;
 
+#endregion
+
 namespace unit_tests.commands
 {
     public class ThrottleCommandTest : ThrottlePositionCommand
     {
-
         /**
          * Test for valid InputStream read, maximum value of 100%
          *
@@ -77,7 +80,7 @@ namespace unit_tests.commands
             mockIn.Write(Encoding.ASCII.GetBytes($"41 11 00>"));
             mockIn.Flush();
             mockIn.Position = 0;
-            
+
             // call the method to test
             ReadResult(mockIn);
             Assert.Equal(0f, Percentage);

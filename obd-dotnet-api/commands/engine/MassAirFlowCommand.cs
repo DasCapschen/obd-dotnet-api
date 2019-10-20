@@ -11,41 +11,54 @@
  * the License.
  */
 
+using obd_dotnet_api.enums;
 
-/**
- * Mass Air Flow (MAF)
- *
- */
+
 namespace obd_dotnet_api.commands.engine
 {
     public class MassAirFlowCommand : ObdCommand
     {
         private float _maf = -1.0f;
 
+        /// <summary>
+        /// ctor
+        /// </summary>
         public MassAirFlowCommand()
             : base("01 10")
         {
         }
 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
         public MassAirFlowCommand(MassAirFlowCommand other)
             : base(other)
         {
         }
 
+
+        /// <inheritdoc/>
         public override void PerformCalculations()
         {
             _maf = (Buffer[2] * 256 + Buffer[3]) / 100.0f;
         }
 
+        /// <inheritdoc/>
         public override string FormattedResult => $"{_maf:2F}{ResultUnit}";
 
+        /// <inheritdoc/>
         public override string CalculatedResult => _maf.ToString();
 
+        /// <inheritdoc/>
         public override string ResultUnit => "g/s";
-
-
+        
+        /// <summary>
+        /// Mass Air Flow
+        /// </summary>
         public double Maf => _maf;
 
-        public override string Name => AvailableCommandNames.Maf.Value;
+        /// <inheritdoc/>
+        public override string Name => AvailableCommandNames.Maf.Name;
     }
 }

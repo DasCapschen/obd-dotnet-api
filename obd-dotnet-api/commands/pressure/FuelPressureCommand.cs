@@ -11,30 +11,36 @@
  * the License.
  */
 
+using obd_dotnet_api.enums;
 
-/**
- * <p>FuelPressureCommand class.</p>
- *
- */
 namespace obd_dotnet_api.commands.pressure
 {
-    public class FuelPressureCommand : PressureCommand 
+    public class FuelPressureCommand : PressureCommand
     {
-        public FuelPressureCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public FuelPressureCommand()
             : base("01 0A")
         {
         }
-        
-        public FuelPressureCommand(FuelPressureCommand other) 
+
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public FuelPressureCommand(FuelPressureCommand other)
             : base(other)
         {
         }
-        
+
+        ///<inheritdoc/>
         protected override int PreparePressureValue()
         {
             return Buffer[2] * 3;
         }
 
-        public override string Name => AvailableCommandNames.FuelPressure.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.FuelPressure.Name;
     }
 }

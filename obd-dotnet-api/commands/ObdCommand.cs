@@ -11,30 +11,23 @@
  * the License.
  */
 
-/**
- * Base OBD command.
- *
- */
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using obd_dotnet_api.commands;
 using obd_dotnet_api.exceptions;
 
 namespace obd_dotnet_api.commands
 {
-    public abstract class ObdCommand 
+    /// <summary>base obd command</summary>
+    public abstract class ObdCommand
     {
-        /// <summary>
-        /// Error classes to be tested in order
-        /// </summary>
-        private readonly Type[] _errorClasses = 
+        /// <summary>Error classes to be tested in order</summary>
+        private readonly Type[] _errorClasses =
         {
             typeof(UnableToConnectException),
             typeof(BusInitException),
@@ -54,10 +47,17 @@ namespace obd_dotnet_api.commands
         //properties
         protected List<int> Buffer { get; set; }
         protected bool UseImperialUnits { get; set; }
-        public string CommandPid => Cmd.Substring(3);
-        public string Result => RawData;
         
+        /// <summary>Pid of the Command</summary>
+        public string CommandPid => Cmd.Substring(3);
+        
+        /// <summary>Raw Data Result</summary>
+        public string Result => RawData;
+
+        /// <summary>Start</summary>
         public long Start { get; set; }
+        
+        /// <summary>End</summary>
         public long End { get; set; }
 
         /// <summary> Time in ms the command waits before returning from #sendCommand() </summary>
@@ -66,35 +66,36 @@ namespace obd_dotnet_api.commands
             get => ResponseDelayInMs;
             set => ResponseDelayInMs = value;
         }
-        
+
+        /// <summary>Command Mode</summary>
         public string CommandMode => Cmd.Length >= 2 ? Cmd.Substring(0, 2) : Cmd;
 
         /// <summary>The unit of the result, as used in <see cref="FormattedResult"/></summary>
         /// <returns>a string representing the unit or "", never null</returns>
         public virtual string ResultUnit => "";
-        
+
         /// <summary>a formatted command response in string representation.</summary>
         public abstract string FormattedResult { get; }
 
         /// <summary>the command response in string representation, without formatting.</summary>
         public abstract string CalculatedResult { get; }
-        
+
         /// <summary>the OBD command name.</summary>
         public abstract string Name { get; }
-        
+
         /// <summary> Default ctor to use </summary>
         /// <param name="command"> command the command to send </param>
-        public ObdCommand(string command) 
+        public ObdCommand(string command)
         {
             Cmd = command;
             Buffer = new List<int>();
         }
 
         /// <summary> Prevent empty instantiation </summary>
-        private ObdCommand() 
+        private ObdCommand()
         {
         }
-        
+
         /// <summary>Copy ctor</summary>
         /// <param name="other">ObdCommand to Copy</param>
         public ObdCommand(ObdCommand other)
@@ -109,7 +110,7 @@ namespace obd_dotnet_api.commands
         /// <param name="inputStream"></param>
         /// <param name="outputStream"></param>
         [MethodImpl(MethodImplOptions.Synchronized)] //Only one command can write and read a data in one time.
-        public virtual void Run(Stream inputStream, Stream outputStream) 
+        public virtual void Run(Stream inputStream, Stream outputStream)
         {
             Start = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             SendCommand(outputStream);
@@ -126,12 +127,12 @@ namespace obd_dotnet_api.commands
         {
             // write to OutputStream (i.e.: a BluetoothSocket) with an added
             // Carriage return
-            
+
             //ascii encoding works because cmd is something like "01 00"
             var buffer = Encoding.ASCII.GetBytes(Cmd + "\r");
             outputStream.Write(buffer, 0, buffer.Length);
             outputStream.Flush();
-            if (ResponseDelayInMs > 0) 
+            if (ResponseDelayInMs > 0)
             {
                 Thread.Sleep(ResponseDelayInMs);
             }
@@ -147,7 +148,7 @@ namespace obd_dotnet_api.commands
             var buffer = Encoding.ASCII.GetBytes("\r");
             outputStream.Write(buffer, 0, buffer.Length);
             outputStream.Flush();
-            if (ResponseDelayInMs > 0) 
+            if (ResponseDelayInMs > 0)
             {
                 Thread.Sleep(ResponseDelayInMs);
             }
@@ -166,40 +167,51 @@ namespace obd_dotnet_api.commands
             FillBuffer();
             PerformCalculations();
         }
-    
+
         /// <summary>
         /// This method exists so that for each command, there must be a method that is called only once to perform calculations.
         /// </summary>
         public abstract void PerformCalculations();
 
-    
+
         //regex patterns
         private static readonly string WhitespacePattern = "\\s";
         private static readonly string BusinitPattern = "(BUS INIT)|(BUSINIT)|(\\.)";
         private static readonly string SearchingPattern = "SEARCHING";
         private static readonly string DigitsLettersPattern = "([0-9A-F])+";
 
+        /// <summary>
+        /// Regex Replaces all occurences of pattern in input with replacement
+        /// </summary>
+        /// <param name="pattern">regex pattern</param>
+        /// <param name="input">original string</param>
+        /// <param name="replacement">replace pattern with this</param>
+        /// <returns>new string</returns>
         protected string ReplaceAll(string pattern, string input, string replacement)
         {
             return Regex.Replace(input, pattern, replacement);
         }
 
+        /// <summary>
+        /// <see cref="ReplaceAll"/> with empty string as replacement
+        /// </summary>
+        /// <param name="pattern">regex pattern</param>
+        /// <param name="input">original string</param>
+        /// <returns>new string</returns>
         protected string RemoveAll(string pattern, string input)
         {
             return Regex.Replace(input, pattern, "");
         }
 
 
-        /// <summary>
-        /// fill buffer
-        /// </summary>
+        /// <summary>fill buffer</summary>
         /// <exception cref="NonNumericResponseException"></exception>
-        protected virtual void FillBuffer() 
+        protected virtual void FillBuffer()
         {
             RawData = RemoveAll(WhitespacePattern, RawData); //removes all [ \t\n\x0B\f\r]
             RawData = RemoveAll(BusinitPattern, RawData);
 
-            if (!Regex.IsMatch(RawData, DigitsLettersPattern)) 
+            if (!Regex.IsMatch(RawData, DigitsLettersPattern))
             {
                 throw new NonNumericResponseException(RawData);
             }
@@ -208,7 +220,7 @@ namespace obd_dotnet_api.commands
             Buffer.Clear();
             var begin = 0;
             const int length = 2;
-            while ((begin+length) <= RawData.Length)
+            while ((begin + length) <= RawData.Length)
             {
                 var hex = "0x" + RawData.Substring(begin, length);
                 Buffer.Add(Convert.ToInt32(hex, 16));
@@ -217,11 +229,9 @@ namespace obd_dotnet_api.commands
         }
 
 
-        /// <summary>
-        /// readRawData
-        /// </summary>
+        /// <summary>readRawData</summary>
         /// <param name="inputStream"></param>
-        protected virtual void ReadRawData(Stream inputStream) 
+        protected virtual void ReadRawData(Stream inputStream)
         {
             int b = 0;
             var res = new StringBuilder();
@@ -237,6 +247,7 @@ namespace obd_dotnet_api.commands
                 {
                     break;
                 }
+
                 res.Append(c);
             }
 
@@ -256,19 +267,19 @@ namespace obd_dotnet_api.commands
              * everything from the last carriage return before those two (trimmed above).
              */
             //kills multiline.. rawData = rawData.substring(rawData.lastIndexOf(13) + 1);
-            RawData = RemoveAll(WhitespacePattern, RawData);//removes all [ \t\n\x0B\f\r]
+            RawData = RemoveAll(WhitespacePattern, RawData); //removes all [ \t\n\x0B\f\r]
         }
 
-        private void CheckForErrors() 
+        private void CheckForErrors()
         {
-            foreach(var errorClass in _errorClasses) 
+            foreach (var errorClass in _errorClasses)
             {
                 ResponseException messageError;
 
-                messageError = (ResponseException)Activator.CreateInstance(errorClass);
+                messageError = (ResponseException) Activator.CreateInstance(errorClass);
                 messageError.Command = Cmd;
 
-                if (messageError.IsError(RawData)) 
+                if (messageError.IsError(RawData))
                 {
                     throw messageError;
                 }
@@ -279,7 +290,7 @@ namespace obd_dotnet_api.commands
         {
             if (ReferenceEquals(cmd1, null)) return ReferenceEquals(cmd2, null);
             if (ReferenceEquals(cmd2, null)) return false;
-            
+
             return cmd1.Cmd == cmd2.Cmd;
         }
 
@@ -296,7 +307,7 @@ namespace obd_dotnet_api.commands
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(obj, this)) return true;
-            if(obj == null || obj.GetType() != GetType()) return false;
+            if (obj == null || obj.GetType() != GetType()) return false;
 
             var cmd = (ObdCommand) obj;
 

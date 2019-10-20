@@ -12,40 +12,55 @@
  */
 
 
-/**
- * Fuel Consumption Rate per hour.
- *
- */
+using obd_dotnet_api.enums;
+
 namespace obd_dotnet_api.commands.fuel
 {
-    public class ConsumptionRateCommand : ObdCommand 
+    /// <summary>
+    /// Fuel Consumption Rate per hour.
+    /// </summary>
+    public class ConsumptionRateCommand : ObdCommand
     {
-
         private float _fuelRate = -1.0f;
 
-        public ConsumptionRateCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public ConsumptionRateCommand()
             : base("01 5E")
         {
         }
 
-        public ConsumptionRateCommand(ConsumptionRateCommand other) 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public ConsumptionRateCommand(ConsumptionRateCommand other)
             : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             _fuelRate = (Buffer[2] * 256 + Buffer[3]) * 0.05f;
         }
 
+        ///<inheritdoc/>
         public override string FormattedResult => $"{_fuelRate:1F}{ResultUnit}";
 
+        ///<inheritdoc/>
         public override string CalculatedResult => _fuelRate.ToString();
 
+        ///<inheritdoc/>
         public override string ResultUnit => "L/h";
 
+        /// <summary>
+        /// fuel consumption in Litres per Hour
+        /// </summary>
         public float LitersPerHour => _fuelRate;
 
-        public override string Name => AvailableCommandNames.FuelConsumptionRate.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.FuelConsumptionRate.Name;
     }
 }

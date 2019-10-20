@@ -11,26 +11,26 @@
  * the License.
  */
 
+using obd_dotnet_api.enums;
 
-/**
- * Fuel systems that use conventional oxygen sensor display the commanded open
- * loop equivalence ratio while the system is in open loop. Should report 100%
- * when in closed loop fuel.
- * <p>
- * To obtain the actual air/fuel ratio being commanded, multiply the
- * stoichiometric A/F ratio by the equivalence ratio. For example, gasoline,
- * stoichiometric is 14.64:1 ratio. If the fuel control system was commanded an
- * equivalence ratio of 0.95, the commanded A/F ratio to the engine would be
- * 14.64 * 0.95 = 13.9 A/F.
- *
- */
 namespace obd_dotnet_api.commands.control
 {
-    public class EquivalentRatioCommand : PercentageObdCommand 
+    /// <summary>
+    /// Fuel systems that use conventional oxygen sensor display the commanded open
+    /// loop equivalence ratio while the system is in open loop. Should report 100%
+    /// when in closed loop fuel.
+    /// <p/>
+    /// To obtain the actual air/fuel ratio being commanded, multiply the
+    /// stoichiometric A/F ratio by the equivalence ratio. For example, gasoline,
+    /// stoichiometric is 14.64:1 ratio. If the fuel control system was commanded an
+    /// equivalence ratio of 0.95, the commanded A/F ratio to the engine would be
+    /// 14.64 * 0.95 = 13.9 A/F.
+    /// </summary>
+    public class EquivalentRatioCommand : PercentageObdCommand
     {
         /// <summary>default ctor</summary>
-        public EquivalentRatioCommand() 
-            :base("01 44")
+        public EquivalentRatioCommand()
+            : base("01 44")
         {
         }
 
@@ -41,6 +41,7 @@ namespace obd_dotnet_api.commands.control
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             var a = Buffer[2];
@@ -48,8 +49,12 @@ namespace obd_dotnet_api.commands.control
             Percentage = (a * 256 + b) / 32768.0f;
         }
 
+        /// <summary>
+        /// Ratio, see <see cref="PercentageObdCommand.Percentage"/>
+        /// </summary>
         public double Ratio => Percentage;
 
-        public override string Name => AvailableCommandNames.EquivRatio.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.EquivRatio.Name;
     }
 }

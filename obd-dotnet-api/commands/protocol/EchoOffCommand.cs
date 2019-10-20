@@ -11,25 +11,28 @@
  * the License.
  */
 
-/**
- * Turn-off echo.
- *
- */
 namespace obd_dotnet_api.commands.protocol
 {
-    public class EchoOffCommand : ObdProtocolCommand 
+    public class EchoOffCommand : ObdProtocolCommand
     {
-
-        public EchoOffCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public EchoOffCommand()
             : base("AT E0")
         {
         }
 
-        public EchoOffCommand(EchoOffCommand other) 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public EchoOffCommand(EchoOffCommand other)
             : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override string Name => "Echo Off";
     }
 }

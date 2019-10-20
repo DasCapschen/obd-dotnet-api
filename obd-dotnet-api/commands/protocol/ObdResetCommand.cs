@@ -11,24 +11,31 @@
  * the License.
  */
 
-/**
- * Reset the OBD connection.
- *
- */
 namespace obd_dotnet_api.commands.protocol
 {
-    public class ObdResetCommand : ObdProtocolCommand 
+    /// <summary>
+    /// Reset the OBD connection.
+    /// </summary>
+    public class ObdResetCommand : ObdProtocolCommand
     {
-        public ObdResetCommand() 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ObdResetCommand()
             : base("AT Z")
         {
         }
 
-        public ObdResetCommand(ObdResetCommand other) 
+        /// <summary>
+        /// Copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public ObdResetCommand(ObdResetCommand other)
             : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override string Name => "Reset OBD";
     }
 }

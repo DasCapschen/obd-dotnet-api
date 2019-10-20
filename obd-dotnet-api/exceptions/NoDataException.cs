@@ -11,18 +11,16 @@
  * the License.
  */
 
-/**
- * Thrown when there is a "NO DATA" message.
- *
- */
 namespace obd_dotnet_api.exceptions
 {
-    public class NoDataException : ResponseException 
+    /// <summary>
+    /// Thrown when there is a "NO DATA" message
+    /// </summary>
+    public class NoDataException : ResponseException
     {
-
-        /**
-         * <p>Constructor for NoDataException.</p>
-         */
+        /// <summary>
+        /// Constructor for NoDataException
+        /// </summary>
         public NoDataException() : base("NO DATA")
         {
         }

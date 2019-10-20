@@ -16,10 +16,14 @@
  * Test results with echo on and off.
  */
 
+#region
+
 using System.IO;
 using System.Text;
 using obd_dotnet_api.commands;
 using Xunit;
+
+#endregion
 
 namespace unit_tests.commands
 {
@@ -31,7 +35,7 @@ namespace unit_tests.commands
      * @throws java.io.IOException
      */
         [Fact]
-        public void TestValidSpeedMetricWithMessage() 
+        public void TestValidSpeedMetricWithMessage()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -51,7 +55,7 @@ namespace unit_tests.commands
      * @throws java.io.IOException
      */
         [Fact]
-        public void TestValidSpeedMetricWithoutMessage() 
+        public void TestValidSpeedMetricWithoutMessage()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -63,6 +67,5 @@ namespace unit_tests.commands
             ReadResult(mockIn);
             Assert.Equal(64, MetricSpeed);
         }
-
     }
 }

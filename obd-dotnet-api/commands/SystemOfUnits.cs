@@ -11,13 +11,11 @@
  * the License.
  */
 
-/**
- * This interface will define methods for converting to/from imperial units and
- * from/to metric units.
- *
- */
 namespace obd_dotnet_api.commands
 {
+    /// <summary>
+    /// This interface will define methods for converting to/from imperial units and from/to metric units.
+    /// </summary>
     public interface ISystemOfUnits
     {
         /// <summary>convert the metric to the imperial unit</summary>

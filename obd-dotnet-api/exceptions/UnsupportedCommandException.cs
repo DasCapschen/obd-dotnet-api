@@ -11,17 +11,16 @@
  * the License.
  */
 
-/**
- * Thrown when there is a "?" message.
- *
- */
 namespace obd_dotnet_api.exceptions
 {
+    /// <summary>
+    /// Thrown when there is a "?" message
+    /// </summary>
     public class UnsupportedCommandException : ResponseException
     {
-        /**
-         * <p>Constructor for UnsupportedCommandException.</p>
-         */
+        /// <summary>
+        /// Constructor for UnsupportedCommandException.
+        /// </summary>
         public UnsupportedCommandException()
             : base("7F 0[0-A] 1[1-2]", true)
         {

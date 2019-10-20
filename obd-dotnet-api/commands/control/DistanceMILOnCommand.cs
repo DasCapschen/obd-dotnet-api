@@ -11,47 +11,66 @@
  * the License.
  */
 
+using obd_dotnet_api.enums;
 
-/**
- * <p>DistanceMILOnCommand class.</p>
- *
- */
 namespace obd_dotnet_api.commands.control
 {
-    public class DistanceMilOnCommand : ObdCommand, ISystemOfUnits 
+    /// <summary>
+    /// Distance travelled with Check Engine Light on
+    /// </summary>
+    public class DistanceMilOnCommand : ObdCommand, ISystemOfUnits
     {
         private int _km = 0;
 
-        public DistanceMilOnCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public DistanceMilOnCommand()
             : base("01 21")
         {
         }
 
-        public DistanceMilOnCommand(DistanceMilOnCommand other) 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public DistanceMilOnCommand(DistanceMilOnCommand other)
             : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             _km = Buffer[2] * 256 + Buffer[3];
         }
 
+        ///<inheritdoc/>
         public override string FormattedResult => UseImperialUnits
             ? $"{GetImperialUnit():2F}{ResultUnit}"
             : $"{_km:D}{ResultUnit}";
 
+        ///<inheritdoc/>
         public override string CalculatedResult => UseImperialUnits ? GetImperialUnit().ToString() : _km.ToString();
 
+        ///<inheritdoc/>
         public override string ResultUnit => UseImperialUnits ? "m" : "km"; //m == miles
 
+        /// <summary>
+        /// Distance in Miles
+        /// </summary>
+        /// <returns></returns>
         public float GetImperialUnit()
         {
             return _km * 0.621371192F;
         }
 
+        /// <summary>
+        /// Distance in Kilometers
+        /// </summary>
         public int DistanceKm => _km;
 
-        public override string Name => AvailableCommandNames.DistanceTraveledMilOn.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.DistanceTraveledMilOn.Name;
     }
 }

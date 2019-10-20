@@ -11,25 +11,24 @@
  * the License.
  */
 
-
-/**
- * Thrown when there are no numbers in the response and they are expected
- *
- */
+#region
 
 using System;
 
+#endregion
+
 namespace obd_dotnet_api.exceptions
 {
-    public class NonNumericResponseException : Exception 
+    /// <summary>
+    /// Thrown when there are no numbers in the response and they are expected
+    /// </summary>
+    public class NonNumericResponseException : Exception
     {
-
-        /**
-         * <p>Constructor for NonNumericResponseException.</p>
-         *
-         * @param message a {@link java.lang.String} object.
-         */
-        public NonNumericResponseException(string message) 
+        /// <summary>
+        /// Constructor for NonNumericResponseException
+        /// </summary>
+        /// <param name="message"></param>
+        public NonNumericResponseException(string message)
             : base("Error reading response: " + message)
         {
         }

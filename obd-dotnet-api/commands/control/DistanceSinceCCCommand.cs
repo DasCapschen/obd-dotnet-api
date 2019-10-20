@@ -11,50 +11,68 @@
  * the License.
  */
 
+using obd_dotnet_api.enums;
 
-/**
- * Distance traveled since codes cleared-up.
- *
- */
 namespace obd_dotnet_api.commands.control
 {
-    public class DistanceSinceCcCommand : ObdCommand, ISystemOfUnits 
+    /// <summary>
+    /// Distance traveled since codes cleared-up.
+    /// </summary>
+    public class DistanceSinceCcCommand : ObdCommand, ISystemOfUnits
     {
-
         private int _km = 0;
 
-        public DistanceSinceCcCommand() 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public DistanceSinceCcCommand()
             : base("01 31")
         {
         }
 
-        public DistanceSinceCcCommand(DistanceSinceCcCommand other) 
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        /// <param name="other"></param>
+        public DistanceSinceCcCommand(DistanceSinceCcCommand other)
             : base(other)
         {
         }
 
+        ///<inheritdoc/>
         public override void PerformCalculations()
         {
             _km = Buffer[2] * 256 + Buffer[3];
         }
 
+        ///<inheritdoc/>
         public override string FormattedResult =>
             UseImperialUnits
                 ? $"{GetImperialUnit():2F}{ResultUnit}"
                 : $"{_km:D}{ResultUnit}";
 
+        ///<inheritdoc/>
         public override string CalculatedResult => UseImperialUnits ? GetImperialUnit().ToString() : _km.ToString();
-
+        
+        ///<inheritdoc/>
         public override string ResultUnit => UseImperialUnits ? "m" : "km"; //m == miles
 
+        /// <summary>
+        /// Distance in Miles
+        /// </summary>
+        /// <returns></returns>
         public float GetImperialUnit()
         {
             return _km * 0.621371192F;
         }
 
         //original was getKm and setKm
+        /// <summary>
+        /// Distance in Kilometers
+        /// </summary>
         public int DistanceKm => _km;
 
-        public override string Name => AvailableCommandNames.DistanceTraveledAfterCodesCleared.Value;
+        ///<inheritdoc/>
+        public override string Name => AvailableCommandNames.DistanceTraveledAfterCodesCleared.Name;
     }
 }

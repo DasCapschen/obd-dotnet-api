@@ -15,30 +15,33 @@
  * Tests for TemperatureCommand sub-classes.
  */
 
+#region
+
 using System.IO;
 using System.Text;
 using obd_dotnet_api.commands.temperature;
 using Xunit;
 
+#endregion
+
 namespace unit_tests.commands
 {
     public class AirIntakeTempCommandTest : AirIntakeTemperatureCommand
     {
-
         /**
      * Test for valid InputStream read, 24ºC
      *
      * @throws IOException
      */
         [Fact]
-        public void TestValidTemperatureCelsius() 
+        public void TestValidTemperatureCelsius()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
             mockIn.Write(Encoding.ASCII.GetBytes($"41 0F 40>"));
             mockIn.Flush();
             mockIn.Position = 0;
-        
+
             // call the method to test
             ReadResult(mockIn);
             Assert.Equal(24f, Temperature);
@@ -50,7 +53,7 @@ namespace unit_tests.commands
      * @throws IOException
      */
         [Fact]
-        public void TestValidTemperatureFahrenheit() 
+        public void TestValidTemperatureFahrenheit()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
@@ -70,7 +73,7 @@ namespace unit_tests.commands
      * @throws IOException
      */
         [Fact]
-        public void TestValidTemperatureZeroCelsius() 
+        public void TestValidTemperatureZeroCelsius()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();

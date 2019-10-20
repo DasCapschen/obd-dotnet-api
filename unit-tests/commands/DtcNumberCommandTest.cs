@@ -16,16 +16,19 @@
  * Tests for DtcNumberCommand class.
  */
 
+#region
+
 using System.IO;
 using System.Text;
 using obd_dotnet_api.commands.control;
 using Xunit;
 
+#endregion
+
 namespace unit_tests.commands
 {
     public class DtcNumberCommandTest : DtcNumberCommand
     {
-
         /**
      * Test for valid InputStream read, MIL on.
      *
@@ -53,7 +56,7 @@ namespace unit_tests.commands
      * @throws IOException
      */
         [Fact]
-        public void TestMilOff() 
+        public void TestMilOff()
         {
             // mock InputStream read
             var mockIn = new MemoryStream();
