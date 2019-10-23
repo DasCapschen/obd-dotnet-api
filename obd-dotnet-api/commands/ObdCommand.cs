@@ -125,6 +125,7 @@ namespace obd_dotnet_api.commands
         /// <param name="inputStream">stream we read the result from</param>
         /// <param name="outputStream">stream we write the command to</param>
         /// <returns>async task</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public virtual async Task RunAsync(Stream inputStream, Stream outputStream)
         {
             Start = DateTimeOffset.Now.ToUnixTimeMilliseconds();
