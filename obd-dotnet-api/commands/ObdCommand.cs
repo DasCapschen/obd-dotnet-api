@@ -19,6 +19,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using obd_dotnet_api.exceptions;
 
 namespace obd_dotnet_api.commands
@@ -107,8 +108,8 @@ namespace obd_dotnet_api.commands
         /// Sends the OBD-II request and deals with the response.
         /// This method CAN be overriden in fake commands.
         /// </summary>
-        /// <param name="inputStream"></param>
-        /// <param name="outputStream"></param>
+        /// <param name="inputStream">stream we read the result from</param>
+        /// <param name="outputStream">stream we write the command to</param>
         [MethodImpl(MethodImplOptions.Synchronized)] //Only one command can write and read a data in one time.
         public virtual void Run(Stream inputStream, Stream outputStream)
         {
@@ -119,10 +120,24 @@ namespace obd_dotnet_api.commands
         }
 
         /// <summary>
+        /// Async variant of <see cref="Run(Stream, Stream)"/>
+        /// </summary>
+        /// <param name="inputStream">stream we read the result from</param>
+        /// <param name="outputStream">stream we write the command to</param>
+        /// <returns>async task</returns>
+        public virtual async Task RunAsync(Stream inputStream, Stream outputStream)
+        {
+            Start = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            await SendCommandAsync(outputStream); //wait for command to finish sending before trying to read
+            await ReadResultAsync(inputStream);   //wait for reading of result to finish
+            End = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        }
+
+        /// <summary>
         /// Sends the OBD-II request.
         /// This method may be overriden in subclasses, such as ObMultiCommand or TroubleCodesCommand
         /// </summary>
-        /// <param name="outputStream">The output stream</param>
+        /// <param name="outputStream">stream to write commands into</param>
         protected void SendCommand(Stream outputStream)
         {
             // write to OutputStream (i.e.: a BluetoothSocket) with an added
@@ -132,17 +147,33 @@ namespace obd_dotnet_api.commands
             var buffer = Encoding.ASCII.GetBytes(Cmd + "\r");
             outputStream.Write(buffer, 0, buffer.Length);
             outputStream.Flush();
+
             if (ResponseDelayInMs > 0)
             {
                 Thread.Sleep(ResponseDelayInMs);
             }
         }
 
+        /// <summary>
+        /// Async variant of <see cref="SendCommand(Stream)"/>
+        /// </summary>
+        /// <param name="outputStream">stream to write commands into</param>
+        /// <returns>async task</returns>
+        protected async Task SendCommandAsync(Stream outputStream) //cannot await void
+        {
+            var buffer = Encoding.ASCII.GetBytes(Cmd + "\r");
+            await outputStream.WriteAsync(buffer, 0, buffer.Length);
+            await outputStream.FlushAsync();
+            if (ResponseDelayInMs > 0)
+            {
+                await Task.Delay(ResponseDelayInMs);
+            }
+        }
 
         /// <summary>
         /// Resends this command.
         /// </summary>
-        /// <param name="outputStream"></param>
+        /// <param name="outputStream">stream to write commands into</param>
         protected void ResendCommand(Stream outputStream)
         {
             var buffer = Encoding.ASCII.GetBytes("\r");
@@ -154,12 +185,28 @@ namespace obd_dotnet_api.commands
             }
         }
 
+        /// <summary>
+        /// Async variant of <see cref="ResendCommand(Stream)"/>
+        /// </summary>
+        /// <param name="outputStream">stream to write commands into</param>
+        /// <returns>async task</returns>
+        protected async Task ResendCommandAsync(Stream outputStream)
+        {
+            var buffer = Encoding.ASCII.GetBytes("\r");
+            await outputStream.WriteAsync(buffer, 0, buffer.Length);
+            await outputStream.FlushAsync();
+            if (ResponseDelayInMs > 0)
+            {
+                await Task.Delay(ResponseDelayInMs);
+            }
+        }
+
 
         /// <summary>
         /// Reads the OBD-II response.
         /// This method may be overriden in subclasses, such as ObdMultiCommand.
         /// </summary>
-        /// <param name="inputStream"></param>
+        /// <param name="inputStream">stream to read result from</param>
         protected virtual void ReadResult(Stream inputStream)
         {
             ReadRawData(inputStream);
@@ -169,10 +216,22 @@ namespace obd_dotnet_api.commands
         }
 
         /// <summary>
+        /// Async variant of <see cref="ReadResult(Stream)"/>
+        /// </summary>
+        /// <param name="inputStream">stream to read result from</param>
+        /// <returns>async task</returns>
+        protected virtual async Task ReadResultAsync(Stream inputStream)
+        {
+            await ReadRawDataAsync(inputStream);   //use await for I/O bound code
+            await Task.Run(CheckForErrors);
+            await Task.Run(FillBuffer);            //use Task.Run() for CPU bound code
+            await Task.Run(PerformCalculations);      
+        }
+
+        /// <summary>
         /// This method exists so that for each command, there must be a method that is called only once to perform calculations.
         /// </summary>
         public abstract void PerformCalculations();
-
 
         //regex patterns
         private static readonly string WhitespacePattern = "\\s";
@@ -230,7 +289,7 @@ namespace obd_dotnet_api.commands
 
 
         /// <summary>readRawData</summary>
-        /// <param name="inputStream"></param>
+        /// <param name="inputStream">stream to read data from</param>
         protected virtual void ReadRawData(Stream inputStream)
         {
             int b = 0;
@@ -239,17 +298,24 @@ namespace obd_dotnet_api.commands
             // read until '>' arrives OR end of stream reached
             char c;
 
-            // -1 if the end of the stream is reached
-            while ((b = inputStream.ReadByte()) > -1)
+            //wait for data to become available (read blocks until there is at least 1 byte)
+            //unless it is actually end of stream! then it returns 0!
+            //a network socket (as I am testing with) would only return end of stream if closed though!
+            var buf = new byte[1];
+            inputStream.Read(buf, 0, 1);
+
+            b = buf[0];
+            
+            //now we can read 1 byte at a time
+            do
             {
                 c = (char) b;
                 if (c == '>') // read until '>' arrives
                 {
                     break;
                 }
-
                 res.Append(c);
-            }
+            } while ((b = inputStream.ReadByte()) > -1);
 
             /*
              * Imagine the following response 41 0c 00 0d.
@@ -268,6 +334,39 @@ namespace obd_dotnet_api.commands
              */
             //kills multiline.. rawData = rawData.substring(rawData.lastIndexOf(13) + 1);
             RawData = RemoveAll(WhitespacePattern, RawData); //removes all [ \t\n\x0B\f\r]
+        }
+
+        /// <summary>
+        /// Async variant of <see cref="ReadRawData(Stream)"/>
+        /// </summary>
+        /// <param name="inputStream">stream to read data from</param>
+        /// <returns>async task</returns>
+        protected virtual async Task ReadRawDataAsync(Stream inputStream)
+        {
+            int b = 0;
+            char c;
+            var res = new StringBuilder();
+
+            var buffer = new byte[1];
+            
+            //wait for data to become available
+            await inputStream.ReadAsync(buffer, 0, 1);
+
+            b = (int)buffer[0];
+
+            //from now on, we can just read one byte at a time
+            do
+            {
+                c = (char) b;
+                if (c == '>') // read until '>' arrives
+                {
+                    break;
+                }
+                res.Append(c);
+            } while ((b = inputStream.ReadByte()) > -1);
+
+            RawData = RemoveAll(SearchingPattern, res.ToString());
+            RawData = RemoveAll(WhitespacePattern, RawData);
         }
 
         private void CheckForErrors()

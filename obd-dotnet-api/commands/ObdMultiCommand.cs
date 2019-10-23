@@ -15,6 +15,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace obd_dotnet_api.commands
 {
@@ -46,13 +47,25 @@ namespace obd_dotnet_api.commands
         }
 
         /// <summary>Iterate all commands, send them and read response.</summary>
-        /// <param name="inputStream"></param>
-        /// <param name="outputStream"></param>
+        /// <param name="input">stream to read results from</param>
+        /// <param name="output">stream to write commands into</param>
         public void SendCommands(Stream inputStream, Stream outputStream)
         {
             foreach (var command in _commands)
             {
                 command.Run(inputStream, outputStream);
+            }
+        }
+
+        /// <summary>Async variant of <see cref="SendCommands(Stream, Stream)"/></summary>
+        /// <param name="input">stream to read results from</param>
+        /// <param name="output">stream to write commands into</param>
+        /// <returns>async task</returns>
+        public async Task SendCommandsAsync(Stream input, Stream output)
+        {
+            foreach (var command in _commands)
+            {
+                await command.RunAsync(input, output);
             }
         }
 

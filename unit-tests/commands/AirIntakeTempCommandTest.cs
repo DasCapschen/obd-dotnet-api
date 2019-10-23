@@ -48,10 +48,10 @@ namespace unit_tests.commands
         }
 
         /**
-     * Test for valid InputStream read, 75.2F
-     *
-     * @throws IOException
-     */
+         * Test for valid InputStream read, 75.2F
+         *
+         * @throws IOException
+         */
         [Fact]
         public void TestValidTemperatureFahrenheit()
         {

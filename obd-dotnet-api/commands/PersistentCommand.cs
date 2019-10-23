@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace obd_dotnet_api.commands
 {
@@ -65,6 +66,15 @@ namespace obd_dotnet_api.commands
         }
 
         /// <inheritdoc/>
+        protected override async Task ReadResultAsync(Stream input)
+        {
+            await base.ReadResultAsync(input);
+            var key = GetType().Name;
+            _knownValues[key] = RawData;
+            _knownBuffers[key] = new List<int>(Buffer);
+        }
+
+        /// <inheritdoc/>
         public override void Run(Stream inputStream, Stream outputStream)
         {
             var key = GetType().Name;
@@ -77,6 +87,23 @@ namespace obd_dotnet_api.commands
             else
             {
                 base.Run(inputStream, outputStream);
+            }
+        }
+
+        
+        /// <inheritdoc/>
+        public override async Task RunAsync(Stream inputStream, Stream outputStream)
+        {
+            var key = GetType().Name;
+            if (_knownValues.ContainsKey(key))
+            {
+                RawData = _knownValues[key];
+                Buffer = _knownBuffers[key];
+                await Task.Run(PerformCalculations);
+            }
+            else
+            {
+                await base.RunAsync(inputStream, outputStream);
             }
         }
     }
