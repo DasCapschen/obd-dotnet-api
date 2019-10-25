@@ -125,7 +125,7 @@ namespace obd_dotnet_api.commands
         /// <param name="inputStream">stream we read the result from</param>
         /// <param name="outputStream">stream we write the command to</param>
         /// <returns>async task</returns>
-        [MethodImpl(MethodImplOptions.Synchronized)]
+        //TODO: Synchronise! (Only one command should read / write stream at once!)
         public virtual async Task RunAsync(Stream inputStream, Stream outputStream)
         {
             Start = DateTimeOffset.Now.ToUnixTimeMilliseconds();
@@ -293,7 +293,7 @@ namespace obd_dotnet_api.commands
         /// <param name="inputStream">stream to read data from</param>
         protected virtual void ReadRawData(Stream inputStream)
         {
-            int b = 0;
+            int b;
             var res = new StringBuilder();
 
             // read until '>' arrives OR end of stream reached
@@ -304,7 +304,6 @@ namespace obd_dotnet_api.commands
             //a network socket (as I am testing with) would only return end of stream if closed though!
             var buf = new byte[1];
             inputStream.Read(buf, 0, 1);
-
             b = buf[0];
             
             //now we can read 1 byte at a time
@@ -344,7 +343,7 @@ namespace obd_dotnet_api.commands
         /// <returns>async task</returns>
         protected virtual async Task ReadRawDataAsync(Stream inputStream)
         {
-            int b = 0;
+            int b;
             char c;
             var res = new StringBuilder();
 
@@ -353,7 +352,7 @@ namespace obd_dotnet_api.commands
             //wait for data to become available
             await inputStream.ReadAsync(buffer, 0, 1);
 
-            b = (int)buffer[0];
+            b = buffer[0];
 
             //from now on, we can just read one byte at a time
             do
