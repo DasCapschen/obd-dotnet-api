@@ -45,10 +45,10 @@ namespace obd_dotnet_api.commands.engine
         }
 
         /// <inheritdoc/>
-        public override string FormattedResult => $"{_maf:2F}{ResultUnit}";
+        public override string FormattedResult => $"{_maf:F2}{ResultUnit}";
 
         /// <inheritdoc/>
-        public override string CalculatedResult => _maf.ToString();
+        public override string CalculatedResult => _maf.ToString("F2");
 
         /// <inheritdoc/>
         public override string ResultUnit => "g/s";

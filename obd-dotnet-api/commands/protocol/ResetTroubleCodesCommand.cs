@@ -11,9 +11,11 @@
  * the License.
  */
 
+using obd_dotnet_api.enums;
+
 namespace obd_dotnet_api.commands.protocol
 {
-    public class ResetTroubleCodesCommand : ObdCommand
+    public class ResetTroubleCodesCommand : ObdProtocolCommand
     {
         /// <summary>Constructor</summary>
         public ResetTroubleCodesCommand()
@@ -22,15 +24,6 @@ namespace obd_dotnet_api.commands.protocol
         }
 
         ///<inheritdoc/>
-        public override void PerformCalculations()
-        {
-        }
-
-        ///<inheritdoc/>
-        public override string FormattedResult => Result;
-        ///<inheritdoc/>
-        public override string CalculatedResult => Result;
-        ///<inheritdoc/>
-        public override string Name => Result;
+        public override string Name => AvailableCommandNames.ResetTroubleCodes.Name;
     }
 }

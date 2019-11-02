@@ -50,7 +50,7 @@ namespace obd_dotnet_api.commands.engine
         public override string FormattedResult => $"{_value / 3600:D2}:{(_value % 3600) / 60:D2}:{_value % 60:D2}";
 
         ///<inheritdoc/>
-        public override string CalculatedResult => _value.ToString();
+        public override string CalculatedResult => _value.ToString("D");
 
         ///<inheritdoc/>
         public override string ResultUnit => "s";

@@ -49,13 +49,13 @@ namespace obd_dotnet_api.commands.engine
         ///<inheritdoc/>
         public override string FormattedResult => $"{_rpm:D}{ResultUnit}";
         ///<inheritdoc/>
-        public override string CalculatedResult => _rpm.ToString();
+        public override string CalculatedResult => _rpm.ToString("D");
 
         ///<inheritdoc/>
         public override string ResultUnit => "RPM";
 
         ///<inheritdoc/>
-        public override string Name => AvailableCommandNames.EngineLoad.Name;
+        public override string Name => AvailableCommandNames.EngineRpm.Name;
 
         /// <summary>
         /// revolutions per minute

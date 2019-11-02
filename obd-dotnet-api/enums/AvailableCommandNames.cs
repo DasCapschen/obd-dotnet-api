@@ -140,6 +140,9 @@ namespace obd_dotnet_api.enums
         public static readonly AvailableCommandNames IgnitionMonitor
             = new AvailableCommandNames("Ignition monitor");
 
+        public static readonly AvailableCommandNames ResetTroubleCodes
+            = new AvailableCommandNames("Reset Trouble Codes");
+
         /// <summary>
         /// All Commands in some, fixed, order
         /// </summary>

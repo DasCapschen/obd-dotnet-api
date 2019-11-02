@@ -55,7 +55,7 @@ namespace obd_dotnet_api.commands.fuel
                 {
                     return FuelType.FromValue(_fuelType).Description;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     return "-";
                 }

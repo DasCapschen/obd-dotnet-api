@@ -35,8 +35,8 @@ namespace obd_dotnet_api.commands
         /// <inheritdoc/>
         public override string CalculatedResult =>
             UseImperialUnits
-                ? ImperialSpeed.ToString()
-                : MetricSpeed.ToString();
+                ? ImperialSpeed.ToString("F")
+                : MetricSpeed.ToString("F");
 
         /// <inheritdoc/>
         public override string ResultUnit => UseImperialUnits ? "mph" : "km/h";

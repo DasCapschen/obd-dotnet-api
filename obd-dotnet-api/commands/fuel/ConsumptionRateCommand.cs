@@ -43,14 +43,14 @@ namespace obd_dotnet_api.commands.fuel
         ///<inheritdoc/>
         public override void PerformCalculations()
         {
-            _fuelRate = (Buffer[2] * 256 + Buffer[3]) * 0.05f;
+            _fuelRate = (Buffer[2] * 256 + Buffer[3]) / 20f;
         }
 
         ///<inheritdoc/>
-        public override string FormattedResult => $"{_fuelRate:1F}{ResultUnit}";
+        public override string FormattedResult => $"{_fuelRate:F1}{ResultUnit}";
 
         ///<inheritdoc/>
-        public override string CalculatedResult => _fuelRate.ToString();
+        public override string CalculatedResult => _fuelRate.ToString("F1");
 
         ///<inheritdoc/>
         public override string ResultUnit => "L/h";

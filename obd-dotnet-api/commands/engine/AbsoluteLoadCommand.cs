@@ -47,6 +47,9 @@ namespace obd_dotnet_api.commands.engine
         /// </summary>
         public double Ratio => Percentage;
 
+        /// <summary>"Absolute" Load, no Unit</summary>
+        public override string ResultUnit => "";
+
         ///<inheritdoc/>
         public override string Name => AvailableCommandNames.AbsLoad.Name;
     }

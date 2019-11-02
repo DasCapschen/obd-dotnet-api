@@ -73,7 +73,7 @@ namespace obd_dotnet_api.commands.pressure
 
         ///<inheritdoc/>
         public override string CalculatedResult =>
-            UseImperialUnits ? GetImperialUnit().ToString() : Pressure.ToString();
+            UseImperialUnits ? GetImperialUnit().ToString("F") : Pressure.ToString("D");
 
         ///<inheritdoc/>
         public override string ResultUnit => UseImperialUnits ? "psi" : "kPa";

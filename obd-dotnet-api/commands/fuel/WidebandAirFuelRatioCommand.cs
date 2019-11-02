@@ -32,14 +32,15 @@ namespace obd_dotnet_api.commands.fuel
         {
             float A = Buffer[2];
             float B = Buffer[3];
+            //TODO: again, where does the 14.7f come from?
             _wafr = (((A * 256) + B) / 32768) * 14.7f; //((A*256)+B)/32768
         }
 
         ///<inheritdoc/>
-        public override string FormattedResult => $"{WidebandAirFuelRatio:2F}:1 AFR";
+        public override string FormattedResult => $"{WidebandAirFuelRatio:F2}:1 AFR";
 
         ///<inheritdoc/>
-        public override string CalculatedResult => WidebandAirFuelRatio.ToString();
+        public override string CalculatedResult => WidebandAirFuelRatio.ToString("F2");
 
         /// <summary>
         /// air flow ratio

@@ -23,14 +23,14 @@ namespace obd_dotnet_api.commands.temperature
 
         ///<inheritdoc/>
         public override string FormattedResult => UseImperialUnits
-            ? $"{GetImperialUnit():1F}{ResultUnit}"
-            : $"{Temperature:0F}{ResultUnit}";
+            ? $"{GetImperialUnit():F}{ResultUnit}"
+            : $"{Temperature:F}{ResultUnit}";
 
         ///<inheritdoc/>
         public override string CalculatedResult =>
             UseImperialUnits
-                ? GetImperialUnit().ToString()
-                : Temperature.ToString();
+                ? GetImperialUnit().ToString("F")
+                : Temperature.ToString("F");
 
         ///<inheritdoc/>
         public override string ResultUnit => UseImperialUnits ? "F" : "C";

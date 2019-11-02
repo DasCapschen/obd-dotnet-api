@@ -45,7 +45,7 @@ namespace obd_dotnet_api.commands
         public override string FormattedResult => $"{Percentage:F1}{ResultUnit}";
         
         ///<inheritdoc/>
-        public override string CalculatedResult => Percentage.ToString();
+        public override string CalculatedResult => Percentage.ToString("F1");
 
         ///<inheritdoc/>
         public override string ResultUnit => "%";

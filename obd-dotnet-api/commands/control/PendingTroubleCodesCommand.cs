@@ -47,6 +47,6 @@ namespace obd_dotnet_api.commands.control
         }
 
         ///<inheritdoc/>
-        public override string Name => AvailableCommandNames.PermanentTroubleCodes.Name;
+        public override string Name => AvailableCommandNames.PendingTroubleCodes.Name;
     }
 }

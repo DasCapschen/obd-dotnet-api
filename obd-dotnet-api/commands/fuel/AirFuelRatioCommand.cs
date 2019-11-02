@@ -32,14 +32,15 @@ namespace obd_dotnet_api.commands.fuel
         {
             float A = Buffer[2];
             float B = Buffer[3];
+            //TODO: where does that * 14.7f come from!?
             _afr = (((A * 256) + B) / 32768) * 14.7f; //((A*256)+B)/32768
         }
 
         ///<inheritdoc/>
-        public override string FormattedResult => $"{AirFuelRatio:2F}:1 AFR";
+        public override string FormattedResult => $"{AirFuelRatio:F2}:1 AFR";
 
         ///<inheritdoc/>
-        public override string CalculatedResult => AirFuelRatio.ToString();
+        public override string CalculatedResult => AirFuelRatio.ToString("F2");
 
         public double AirFuelRatio => _afr;
 

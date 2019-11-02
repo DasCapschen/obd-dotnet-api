@@ -86,8 +86,7 @@ namespace obd_dotnet_api.commands.control
             else if (result.Contains(":")) //CAN(ISO-15765) protocol two and more frames.
             {
                 workingData = Regex.Replace(result, "[\r\n].:", ""); //xxx43yy{codes}
-                startIndex =
-                    7; //Header is xxx43yy, xxx is bytes of information to follow, yy showing the number of data items.
+                startIndex = 7; //Header is xxx43yy, xxx is bytes of information to follow, yy showing the number of data items.
             }
             else //ISO9141-2, KWP2000 Fast and KWP2000 5Kbps (ISO15031) protocols.
             {

@@ -120,7 +120,7 @@ namespace obd_dotnet_api.utils
             {
                 return IsAvailable(commandPid, availabilityArray);
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 return safetyReturn;
             }

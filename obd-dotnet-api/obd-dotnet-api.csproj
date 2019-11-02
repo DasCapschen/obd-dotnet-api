@@ -5,7 +5,7 @@
         <RootNamespace>obd_dotnet_api</RootNamespace>
         <LangVersion>8</LangVersion>
         <PackageId>ObdDotnetApi</PackageId>
-        <Version>0.3.0</Version>
+        <Version>0.3.1-prerelease</Version>
         <Authors>DasCapschen</Authors>
         <PackageDescription>"Translation" of the Obd-Java-Api into C#. See https://github.com/pires/obd-java-api</PackageDescription>
         <RepositoryUrl>https://github.com/DasCapschen/obd-dotnet-api</RepositoryUrl>

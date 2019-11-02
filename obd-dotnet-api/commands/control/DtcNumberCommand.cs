@@ -54,9 +54,9 @@ namespace obd_dotnet_api.commands.control
         }
 
         ///<inheritdoc/>
-        public override string FormattedResult => (_milOn ? "MIL is ON" : "MIL is OFF") + _codeCount + " codes";
+        public override string FormattedResult => (_milOn ? "MIL is ON, " : "MIL is OFF, ") + _codeCount + " codes";
         ///<inheritdoc/>
-        public override string CalculatedResult => _codeCount.ToString();
+        public override string CalculatedResult => _codeCount.ToString("D");
 
         /// <summary>
         /// count of codes available

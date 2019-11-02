@@ -42,9 +42,9 @@ namespace obd_dotnet_api.commands.control
         }
 
         ///<inheritdoc/>
-        public override string FormattedResult => $"{_voltage:1F}{ResultUnit}";
+        public override string FormattedResult => $"{_voltage:F1}{ResultUnit}"; //for some reason, I always get "F1V" printed... the format specifier seems broken, but only here...
         ///<inheritdoc/>
-        public override string CalculatedResult => _voltage.ToString();
+        public override string CalculatedResult => _voltage.ToString("F");
         ///<inheritdoc/>
         public override string Name => AvailableCommandNames.ControlModuleVoltage.Name;
         ///<inheritdoc/>

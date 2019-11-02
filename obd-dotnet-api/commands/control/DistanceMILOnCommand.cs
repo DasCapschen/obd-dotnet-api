@@ -51,7 +51,7 @@ namespace obd_dotnet_api.commands.control
             : $"{_km:D}{ResultUnit}";
 
         ///<inheritdoc/>
-        public override string CalculatedResult => UseImperialUnits ? GetImperialUnit().ToString() : _km.ToString();
+        public override string CalculatedResult => UseImperialUnits ? GetImperialUnit().ToString("F2") : _km.ToString("D");
 
         ///<inheritdoc/>
         public override string ResultUnit => UseImperialUnits ? "m" : "km"; //m == miles

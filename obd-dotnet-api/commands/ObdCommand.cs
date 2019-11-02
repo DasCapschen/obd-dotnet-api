@@ -48,10 +48,10 @@ namespace obd_dotnet_api.commands
         //properties
         protected List<int> Buffer { get; set; }
         protected bool UseImperialUnits { get; set; }
-        
+
         /// <summary>Pid of the Command</summary>
-        public string CommandPid => Cmd.Substring(3);
-        
+        public string CommandPid => Cmd.Length > 3 ? Cmd.Substring(3) : "";
+
         /// <summary>Raw Data Result</summary>
         public string Result => RawData;
 
