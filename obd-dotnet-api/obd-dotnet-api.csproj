@@ -15,9 +15,9 @@
 
     <ItemGroup>
         <Folder Include="utils" />
-        <Folder Include="exceptions"/>
-        <Folder Include="enums"/>
-        <Folder Include="commands"/>
+        <Folder Include="exceptions" />
+        <Folder Include="enums" />
+        <Folder Include="commands" />
     </ItemGroup>
 
 </Project>

@@ -171,6 +171,7 @@ namespace obd_dotnet_api.commands.control
             RawData = res.ToString().Trim();
         }
 
+        /*
         protected override async Task ReadRawDataAsync(Stream inputStream)
         {
             int b;
@@ -192,5 +193,6 @@ namespace obd_dotnet_api.commands.control
 
             RawData = res.ToString().Trim();
         }
+        */
     }
 }

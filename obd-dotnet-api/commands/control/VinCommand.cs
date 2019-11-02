@@ -18,7 +18,7 @@ using obd_dotnet_api.enums;
 
 namespace obd_dotnet_api.commands.control
 {
-    public class VinCommand : PersistentCommand
+    public class VinCommand : ObdCommand
     {
         private string _vin = "";
 

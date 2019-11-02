@@ -16,7 +16,7 @@ namespace obd_dotnet_api.commands.protocol
     /// <summary>
     /// abstract base class for AvailablePids Commands
     /// </summary>
-    public abstract class AvailablePidsCommand : PersistentCommand
+    public abstract class AvailablePidsCommand : ObdCommand
     {
         /// <summary>
         /// ctor

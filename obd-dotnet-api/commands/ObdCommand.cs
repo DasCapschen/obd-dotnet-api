@@ -128,10 +128,24 @@ namespace obd_dotnet_api.commands
         //TODO: Synchronise! (Only one command should read / write stream at once!)
         public virtual async Task RunAsync(Stream inputStream, Stream outputStream)
         {
+            //yes, I'm doing it like this now, because you cannot await inside a lock
+            //we cannot have 2 commands read/write at the same time
+            //we also cannot have only read or only write locked
+            //imagine:
+            //  cmd1 locks write, sends its command
+            //  cmd2 locks write as soon as cmd1 finishes and sends its command
+            //  both now waiting for response in read
+            //  cmd2 gets to read before cmd1 does, locks read, and reads cmd1's response!
+            //  cmd1 locks read as soon as cmd2 is done, reads cmd2's response!
+            //thus we need to wait for write AND read to finish before unlocking
+            await Task.Run(() => Run(inputStream, outputStream));
+            
+            /*
             Start = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             await SendCommandAsync(outputStream); //wait for command to finish sending before trying to read
-            await ReadResultAsync(inputStream);   //wait for reading of result to finish
+            await ReadResultAsync(inputStream); //wait for reading of result to finish
             End = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            */
         }
 
         /// <summary>
@@ -155,6 +169,7 @@ namespace obd_dotnet_api.commands
             }
         }
 
+        /*
         /// <summary>
         /// Async variant of <see cref="SendCommand(Stream)"/>
         /// </summary>
@@ -170,6 +185,7 @@ namespace obd_dotnet_api.commands
                 await Task.Delay(ResponseDelayInMs);
             }
         }
+        */
 
         /// <summary>
         /// Resends this command.
@@ -186,6 +202,7 @@ namespace obd_dotnet_api.commands
             }
         }
 
+        /*
         /// <summary>
         /// Async variant of <see cref="ResendCommand(Stream)"/>
         /// </summary>
@@ -201,8 +218,8 @@ namespace obd_dotnet_api.commands
                 await Task.Delay(ResponseDelayInMs);
             }
         }
-
-
+        */
+        
         /// <summary>
         /// Reads the OBD-II response.
         /// This method may be overriden in subclasses, such as ObdMultiCommand.
@@ -216,6 +233,7 @@ namespace obd_dotnet_api.commands
             PerformCalculations();
         }
 
+        /*
         /// <summary>
         /// Async variant of <see cref="ReadResult(Stream)"/>
         /// </summary>
@@ -228,6 +246,7 @@ namespace obd_dotnet_api.commands
             await Task.Run(FillBuffer);            //use Task.Run() for CPU bound code
             await Task.Run(PerformCalculations);      
         }
+        */
 
         /// <summary>
         /// This method exists so that for each command, there must be a method that is called only once to perform calculations.
@@ -336,6 +355,7 @@ namespace obd_dotnet_api.commands
             RawData = RemoveAll(WhitespacePattern, RawData); //removes all [ \t\n\x0B\f\r]
         }
 
+        /*
         /// <summary>
         /// Async variant of <see cref="ReadRawData(Stream)"/>
         /// </summary>
@@ -368,6 +388,7 @@ namespace obd_dotnet_api.commands
             RawData = RemoveAll(SearchingPattern, res.ToString());
             RawData = RemoveAll(WhitespacePattern, RawData);
         }
+        */
 
         private void CheckForErrors()
         {
