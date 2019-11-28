@@ -11,6 +11,7 @@
  * the License.
  */
 
+using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -152,46 +153,30 @@ namespace obd_dotnet_api.commands.control
             char c;
             var res = new StringBuilder();
 
-            //wait for data to become available (read blocks until there is at least 1 byte)
-            //unless it is actually end of stream! then it returns 0!
-            //a network socket (as I am testing with) would only return end of stream if closed though!
-            var buf = new byte[1];
-            inputStream.Read(buf, 0, 1);
-            b = buf[0];
+            //wait for data to become available, thus initial long timeout
+            //might throw TimeoutException, catch in calling function!
+            b = ReadByteTimeout(inputStream, 1500);
             
             // read until '>' arrives OR end of stream reached (and skip ' ')
-            do
+            while(b > -1)
             {
                 c = (char) b;
                 if (c == '>') break; // read until '>' arrives
                 if (c != ' ') res.Append(c); // skip ' '
-            } while ((b = inputStream.ReadByte()) > -1);
+                
+                try
+                {
+                    //read new byte, or time out rather quickly
+                    b = ReadByteTimeout(inputStream, 250);
+                }
+                catch (TimeoutException)
+                {
+                    //timeout? the '>' was missing, stop!
+                    break;
+                }
+            }
 
             RawData = res.ToString().Trim();
         }
-
-        /*
-        protected override async Task ReadRawDataAsync(Stream inputStream)
-        {
-            int b;
-            char c;
-            var res = new StringBuilder();
-            
-            //wait for data to become available
-            var buffer = new byte[1];
-            await inputStream.ReadAsync(buffer, 0, 1);
-            b = buffer[0];
-            
-            // read until '>' arrives OR end of stream reached (and skip ' ')
-            do
-            {
-                c = (char) b;
-                if (c == '>') break; // read until '>' arrives
-                if (c != ' ') res.Append(c); // skip ' '
-            } while ((b = inputStream.ReadByte()) > -1);
-
-            RawData = res.ToString().Trim();
-        }
-        */
     }
 }

@@ -169,24 +169,6 @@ namespace obd_dotnet_api.commands
             }
         }
 
-        /*
-        /// <summary>
-        /// Async variant of <see cref="SendCommand(Stream)"/>
-        /// </summary>
-        /// <param name="outputStream">stream to write commands into</param>
-        /// <returns>async task</returns>
-        protected async Task SendCommandAsync(Stream outputStream) //cannot await void
-        {
-            var buffer = Encoding.ASCII.GetBytes(Cmd + "\r");
-            await outputStream.WriteAsync(buffer, 0, buffer.Length);
-            await outputStream.FlushAsync();
-            if (ResponseDelayInMs > 0)
-            {
-                await Task.Delay(ResponseDelayInMs);
-            }
-        }
-        */
-
         /// <summary>
         /// Resends this command.
         /// </summary>
@@ -202,24 +184,6 @@ namespace obd_dotnet_api.commands
             }
         }
 
-        /*
-        /// <summary>
-        /// Async variant of <see cref="ResendCommand(Stream)"/>
-        /// </summary>
-        /// <param name="outputStream">stream to write commands into</param>
-        /// <returns>async task</returns>
-        protected async Task ResendCommandAsync(Stream outputStream)
-        {
-            var buffer = Encoding.ASCII.GetBytes("\r");
-            await outputStream.WriteAsync(buffer, 0, buffer.Length);
-            await outputStream.FlushAsync();
-            if (ResponseDelayInMs > 0)
-            {
-                await Task.Delay(ResponseDelayInMs);
-            }
-        }
-        */
-        
         /// <summary>
         /// Reads the OBD-II response.
         /// This method may be overriden in subclasses, such as ObdMultiCommand.
@@ -232,21 +196,6 @@ namespace obd_dotnet_api.commands
             FillBuffer();
             PerformCalculations();
         }
-
-        /*
-        /// <summary>
-        /// Async variant of <see cref="ReadResult(Stream)"/>
-        /// </summary>
-        /// <param name="inputStream">stream to read result from</param>
-        /// <returns>async task</returns>
-        protected virtual async Task ReadResultAsync(Stream inputStream)
-        {
-            await ReadRawDataAsync(inputStream);   //use await for I/O bound code
-            await Task.Run(CheckForErrors);
-            await Task.Run(FillBuffer);            //use Task.Run() for CPU bound code
-            await Task.Run(PerformCalculations);      
-        }
-        */
 
         /// <summary>
         /// This method exists so that for each command, there must be a method that is called only once to perform calculations.
@@ -307,9 +256,29 @@ namespace obd_dotnet_api.commands
             }
         }
 
+        protected int ReadByteTimeout(Stream stream, int timeout)
+        {
+            var result = -1; //in case of timeout, -1
+            
+            //run "ReadByte" async as a task
+            var task = Task.Run(() => 
+                result = stream.ReadByte()
+            );
+            
+            //wait for ReadByte, or alternatively time out
+            if (Task.WaitAll(new Task[] {task}, timeout) == false)
+            {
+                //task didn't finish, it timed out
+                throw new TimeoutException("ReadByte Timed out! There is probably no data!");
+            }
+
+            //return the byte that ReadByte read, or -1
+            return result;
+        }
 
         /// <summary>readRawData</summary>
         /// <param name="inputStream">stream to read data from</param>
+        /// <exception>throws TimeoutException if no data was read within 1.5 seconds</exception>
         protected virtual void ReadRawData(Stream inputStream)
         {
             int b;
@@ -318,23 +287,32 @@ namespace obd_dotnet_api.commands
             // read until '>' arrives OR end of stream reached
             char c;
 
-            //wait for data to become available (read blocks until there is at least 1 byte)
-            //unless it is actually end of stream! then it returns 0!
-            //a network socket (as I am testing with) would only return end of stream if closed though!
-            var buf = new byte[1];
-            inputStream.Read(buf, 0, 1);
-            b = buf[0];
-            
+            //initially wait for data with long timeout
+            //might throw exception! catch in calling function!
+            b = ReadByteTimeout(inputStream, 1500);
+
             //now we can read 1 byte at a time
-            do
+            while(b > -1)
             {
                 c = (char) b;
                 if (c == '>') // read until '>' arrives
                 {
                     break;
                 }
+
                 res.Append(c);
-            } while ((b = inputStream.ReadByte()) > -1);
+                
+                try
+                {
+                    //data should be there, read with small timeout
+                    b = ReadByteTimeout(inputStream, 250);
+                }
+                catch (TimeoutException)
+                {
+                    //timeout? somehow the '>' was missing, stop!
+                    break;
+                }
+            }
 
             /*
              * Imagine the following response 41 0c 00 0d.
@@ -354,41 +332,6 @@ namespace obd_dotnet_api.commands
             //kills multiline.. rawData = rawData.substring(rawData.lastIndexOf(13) + 1);
             RawData = RemoveAll(WhitespacePattern, RawData); //removes all [ \t\n\x0B\f\r]
         }
-
-        /*
-        /// <summary>
-        /// Async variant of <see cref="ReadRawData(Stream)"/>
-        /// </summary>
-        /// <param name="inputStream">stream to read data from</param>
-        /// <returns>async task</returns>
-        protected virtual async Task ReadRawDataAsync(Stream inputStream)
-        {
-            int b;
-            char c;
-            var res = new StringBuilder();
-
-            var buffer = new byte[1];
-            
-            //wait for data to become available
-            await inputStream.ReadAsync(buffer, 0, 1);
-
-            b = buffer[0];
-
-            //from now on, we can just read one byte at a time
-            do
-            {
-                c = (char) b;
-                if (c == '>') // read until '>' arrives
-                {
-                    break;
-                }
-                res.Append(c);
-            } while ((b = inputStream.ReadByte()) > -1);
-
-            RawData = RemoveAll(SearchingPattern, res.ToString());
-            RawData = RemoveAll(WhitespacePattern, RawData);
-        }
-        */
 
         private void CheckForErrors()
         {
