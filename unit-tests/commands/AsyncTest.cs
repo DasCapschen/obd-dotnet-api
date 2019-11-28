@@ -13,7 +13,7 @@ namespace unit_tests.commands
     {
         //memory stream sends "end of stream" if no data ; a socket stream (networkstream) would not!
         //I'm working with bluetooth obd, so it would be a socket, not sure how a cable connection would handle this
-        
+
         public override int Read(byte[] buffer, int offset, int count)
         {
             while (GetBuffer().Length == 0) ;

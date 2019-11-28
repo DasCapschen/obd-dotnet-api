@@ -24,6 +24,8 @@ namespace obd_dotnet_api.commands.protocol
         public ObdResetCommand()
             : base("AT Z")
         {
+            //reset takes quite a while to run
+            ResponseDelayInMs = 1000;
         }
 
         /// <summary>
