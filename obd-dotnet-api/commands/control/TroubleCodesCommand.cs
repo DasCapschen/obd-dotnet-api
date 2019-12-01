@@ -153,27 +153,12 @@ namespace obd_dotnet_api.commands.control
             char c;
             var res = new StringBuilder();
 
-            //wait for data to become available, thus initial long timeout
-            //might throw TimeoutException, catch in calling function!
-            b = ReadByteTimeout(inputStream, 1500);
-            
             // read until '>' arrives OR end of stream reached (and skip ' ')
-            while(b > -1)
+            while((b = inputStream.ReadByte()) > -1)
             {
                 c = (char) b;
                 if (c == '>') break; // read until '>' arrives
                 if (c != ' ') res.Append(c); // skip ' '
-                
-                try
-                {
-                    //read new byte, or time out rather quickly
-                    b = ReadByteTimeout(inputStream, 250);
-                }
-                catch (TimeoutException)
-                {
-                    //timeout? the '>' was missing, stop!
-                    break;
-                }
             }
 
             RawData = res.ToString().Trim();

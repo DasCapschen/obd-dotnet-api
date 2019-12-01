@@ -44,7 +44,6 @@ namespace obd_dotnet_api.commands
         protected readonly string Cmd;
         protected string RawData = null;
         protected int ResponseDelayInMs = 0;
-        protected bool LastCommandTimedOut = false;
 
         //properties
         protected List<int> Buffer { get; set; }
@@ -105,18 +104,6 @@ namespace obd_dotnet_api.commands
         {
         }
 
-        private void ClearStream(Stream inputStream)
-        {
-            var timedOut = false;
-            do
-            {
-                var buf = new byte[1024];
-                var task = inputStream.ReadAsync(buf, 0, buf.Length);
-                timedOut = !task.Wait(1000);
-            } 
-            while (!timedOut);
-        }
-
         /// <summary>
         /// Sends the OBD-II request and deals with the response.
         /// This method CAN be overriden in fake commands.
@@ -126,12 +113,6 @@ namespace obd_dotnet_api.commands
         [MethodImpl(MethodImplOptions.Synchronized)] //Only one command can write and read a data in one time.
         public virtual void Run(Stream inputStream, Stream outputStream)
         {
-            if (LastCommandTimedOut)
-            {
-                ClearStream(inputStream);
-                LastCommandTimedOut = false;
-            }
-
             Start = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             SendCommand(outputStream);
             ReadResult(inputStream);
@@ -275,27 +256,6 @@ namespace obd_dotnet_api.commands
             }
         }
 
-        protected int ReadByteTimeout(Stream stream, int timeout)
-        {
-            var result = -1; //in case of timeout, -1
-            
-            //run "ReadByte" async as a task
-            var task = Task.Run(() => 
-                result = stream.ReadByte()
-            );
-            
-            //wait for ReadByte, or alternatively time out
-            if (!task.Wait(timeout))
-            {
-                LastCommandTimedOut = true;
-                //task didn't finish, it timed out
-                throw new TimeoutException("ReadByte Timed out! There is probably no data!");
-            }
-
-            //return the byte that ReadByte read, or -1
-            return result;
-        }
-
         /// <summary>readRawData</summary>
         /// <param name="inputStream">stream to read data from</param>
         /// <exception>throws TimeoutException if no data was read within 1.5 seconds</exception>
@@ -307,12 +267,8 @@ namespace obd_dotnet_api.commands
             // read until '>' arrives OR end of stream reached
             char c;
 
-            //initially wait for data with long timeout
-            //might throw exception! catch in calling function!
-            b = ReadByteTimeout(inputStream, 1500);
-
             //now we can read 1 byte at a time
-            while(b > -1)
+            while((b = inputStream.ReadByte()) > -1)
             {
                 c = (char) b;
                 if (c == '>') // read until '>' arrives
@@ -321,17 +277,6 @@ namespace obd_dotnet_api.commands
                 }
 
                 res.Append(c);
-                
-                try
-                {
-                    //data should be there, read with small timeout
-                    b = ReadByteTimeout(inputStream, 250);
-                }
-                catch (TimeoutException)
-                {
-                    //timeout? somehow the '>' was missing, stop!
-                    break;
-                }
             }
 
             /*
