@@ -1,18 +1,18 @@
-obd-java-api
+obd-dotnet-api
 ============
 
-OBD-II Java API
+This is a rewrite of the OBD-Java-API by Pires (which is no longer being worked on!) for dotNET, specifically in C#.    
+I created it since a project I worked on required accessing OBD vehicle data over bluetooth.   
 
-## NOTICE
+It should work alright, but there is some weirdness with the Bluetooth sockets which might cause hangs. Use with caution and test and debug before deploying to production.
 
-**I am no longer involved in any way with OBD and related activities, so don't expect my feedback on issues, pull-requests and most of all, email.**
+**I have no intention of maintaining this project in the future.**
 
-I can't even remember when I first picked this project but it was fun as hell in the beginning. Now, years went by and a few contributors jumped in with amazing, smart features and fixes. To those fine people, **Thank you**! This is your _baby_, too.
 
-Now, it's time to say goodbye.
-Pires
 
-[![Build status](https://circleci.com/gh/pires/obd-java-api.svg?style=svg)](https://circleci.com/gh/pires/obd-java-api)
+
+# original readme from obd-java-api below 
+
 
 ## Important resources
 
